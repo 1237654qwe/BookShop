@@ -1,9 +1,13 @@
-import React from "react";
+import React from 'react';
 
-import { Container, Grid, Box, Link } from "@mui/material";
+import {
+  Container,
+  Grid,
+  Box,
+  Link,
+} from '@mui/material';
 
-const Footer: React.FC = () => {
-  return (
+const Footer: React.FC = () => (
     <footer>
       <Box
         px={{ xs: 3, sm: 10 }}
@@ -75,7 +79,6 @@ const Footer: React.FC = () => {
         </Container>
       </Box>
     </footer>
-  );
-};
+);
 
 export default Footer;

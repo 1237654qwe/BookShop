@@ -1,18 +1,27 @@
-import React from "react";
+/* eslint-disable no-use-before-define */
+/* eslint-disable import/extensions */
+/* eslint-disable import/no-unresolved */
+import React from 'react';
 import { connect } from 'react-redux';
-import { useForm } from "react-hook-form"
-import { yupResolver } from "@hookform/resolvers/yup"
-import * as yup from "yup"
-import { Link } from "react-router-dom";
+import { useForm } from 'react-hook-form';
+import { yupResolver } from '@hookform/resolvers/yup';
+import * as yup from 'yup';
+import { Link } from 'react-router-dom';
 
-import { Container, Title, Inputs, Buttons, Text } from '../api/Styled'
 import Button from '@mui/material/Button';
 import TextField from '@mui/material/TextField';
 import Typography from '@mui/material/Typography';
-import { SignUpContainer } from '../api/Styled';
+import {
+  Container,
+  Title,
+  Inputs,
+  Buttons,
+  Text,
+  SignUpContainer,
+} from '../style/Styled';
 
-import { AppStateType } from '../redux/store'
-import { signUp, changeInput } from "../redux/auth/actions";
+import { AppStateType } from '../redux/store';
+import { signUp, changeInput } from '../redux/auth/actions';
 
 const schema = yup.object().shape({
   name: yup.string()
@@ -22,37 +31,34 @@ const schema = yup.object().shape({
     .required('Please Enter your Email')
     .email()
     .max(20),
-  pass: yup.string()
+  password: yup.string()
     .required('Please Enter your password')
     .min(6).max(70)
     .matches(
       /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])[0-9a-zA-Z]{8,}$/,
-      "Must Contain 8 Characters, One Uppercase, One Lowercase and One Number "
+      'Must Contain 8 Characters, One Uppercase, One Lowercase and One Number ',
     ),
   dob: yup.string()
     .required('Please Enter your day of birthday')
     .matches(
       /[0-9]{4}-(0[1-9]|1[012])-(0[1-9]|1[0-9]|2[0-9]|3[01])/,
-      "YYYY-MM-DD"
+      'YYYY-MM-DD',
     ),
-})
-
-
+});
 
 const SignUp: React.FC<Props> = ({
   email,
-  pass,
+  password,
   dob,
   name,
   registration,
-  inputChange
+  inputChange,
 }) => {
-
   const {
     register,
     handleSubmit,
     formState: { errors },
-    reset
+    reset,
   } = useForm({
     resolver: yupResolver(schema),
   });
@@ -62,7 +68,7 @@ const SignUp: React.FC<Props> = ({
   };
 
   const onClickRegistrate = () => {
-    registration(name, email, pass, dob)
+    registration(name, email, password, dob);
   };
 
   return (
@@ -74,55 +80,55 @@ const SignUp: React.FC<Props> = ({
           </Title>
           <Inputs>
             <TextField
-              {...register("name")}
+              {...register('name')}
               name="name"
               type="text"
               label="Name"
               variant="filled"
               value={name}
               onChange={(e) => {
-                inputChange(e.target.name, e.target.value)
+                inputChange(e.target.name, e.target.value);
               }}
             />
             <Text><p>{errors.name?.message}</p></Text>
           </Inputs>
           <Inputs>
             <TextField
-              {...register("email")}
+              {...register('email')}
               name="email"
               label="Email"
               variant="filled"
               value={email}
               onChange={(e) => {
-                inputChange(e.target.name, e.target.value)
+                inputChange(e.target.name, e.target.value);
               }}
             />
             <Text><p>{errors.email?.message}</p></Text>
           </Inputs>
           <Inputs>
             <TextField
-              {...register("password")}
-              name="pass"
+              {...register('password')}
+              name="password"
               type="password"
               label="Password"
               variant="filled"
-              value={pass}
+              value={password}
               onChange={(e) => {
-                inputChange(e.target.name, e.target.value)
+                inputChange(e.target.name, e.target.value);
               }}
             />
-            <Text><p>{errors.pass?.message}</p></Text>
+            <Text><p>{errors.password?.message}</p></Text>
           </Inputs>
           <Inputs>
             <TextField
-              {...register("dob")}
+              {...register('dob')}
               name="dob"
               type="text"
               label="Day of Birthday"
               variant="filled"
               value={dob}
               onChange={(e) => {
-                inputChange(e.target.name, e.target.value)
+                inputChange(e.target.name, e.target.value);
               }}
             />
             <Text><p>{errors.dob?.message}</p></Text>
@@ -151,8 +157,21 @@ const SignUp: React.FC<Props> = ({
 };
 
 const mapStateToProps = (state: AppStateType) => {
-  const { authReducer: { email, pass, dob, name } } = state
-  return { email, pass, dob, name }
+  const {
+    authReducer:
+    {
+      email,
+      password,
+      dob,
+      name,
+    },
+  } = state;
+  return {
+    email,
+    password,
+    dob,
+    name,
+  };
 };
 
 const mapDispatchToProps = {
@@ -163,11 +182,11 @@ const mapDispatchToProps = {
 type StateProps = ReturnType<typeof mapStateToProps>;
 type DispatchProps = typeof mapDispatchToProps;
 
-interface OwnProps { };
+interface OwnProps { }
 
 type Props = StateProps & DispatchProps & OwnProps;
 
 export default connect<StateProps, DispatchProps, OwnProps>(
   mapStateToProps,
-  mapDispatchToProps
+  mapDispatchToProps,
 )(SignUp);

@@ -1,3 +1,4 @@
+/* eslint-disable no-undef */
 import { Outlet, Navigate } from 'react-router';
 
 const RequireAuth: React.FC = () => {

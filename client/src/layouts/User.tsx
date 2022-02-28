@@ -1,3 +1,6 @@
+/* eslint-disable no-use-before-define */
+/* eslint-disable import/extensions */
+/* eslint-disable import/no-unresolved */
 import React, { useEffect, useState } from 'react';
 
 import { connect } from 'react-redux';
@@ -12,35 +15,34 @@ import {
   Title,
   UserInputs,
   Buttons,
-  Imgs
-} from '../api/Styled';
+  Imgs,
+} from '../style/Styled';
 import {
   loadUser,
   changeUserInput,
   updateUser,
   updateAvatar,
-  updateUserPass
+  updateUserPass,
 } from '../redux/user/actions';
 
 const User: React.FC<Props> = ({
   name,
   email,
-  pass,
+  password,
   dob,
   avatarUrl,
   userLoad,
   inputUserChange,
   userUpdate,
   avatarUpdate,
-  userPassUpdate
+  userPassUpdate,
 }) => {
-
   const [edit, setEdit] = useState(false);
-  const [password, setPassword] = useState(false);
+  const [newPassword, setNewPassword] = useState(false);
 
   useEffect(() => {
-    userLoad()
-  }, []);
+    userLoad();
+  }, [userLoad]);
 
   const editPhoto = (e: any) => {
     const avatar = e.target.files[0];
@@ -48,12 +50,12 @@ const User: React.FC<Props> = ({
   };
 
   const editPasswordHandler = () => {
-    setPassword(!password);
+    setNewPassword(!newPassword);
   };
 
   const saveEditPasswordHandler = () => {
-    userPassUpdate(pass);
-    setPassword(!password);
+    userPassUpdate(password);
+    setNewPassword(!newPassword);
   };
 
   const editHandler = () => {
@@ -81,7 +83,7 @@ const User: React.FC<Props> = ({
                 variant="filled"
                 value={name}
                 onChange={(e) => {
-                  inputUserChange(e.target.name, e.target.value)
+                  inputUserChange(e.target.name, e.target.value);
                 }}
               />
             </UserInputs>
@@ -92,7 +94,7 @@ const User: React.FC<Props> = ({
                 variant="filled"
                 value={email}
                 onChange={(e) => {
-                  inputUserChange(e.target.name, e.target.value)
+                  inputUserChange(e.target.name, e.target.value);
                 }}
               />
             </UserInputs>
@@ -104,19 +106,19 @@ const User: React.FC<Props> = ({
                 variant="filled"
                 value={dob}
                 onChange={(e) => {
-                  inputUserChange(e.target.name, e.target.value)
+                  inputUserChange(e.target.name, e.target.value);
                 }}
               />
             </UserInputs>
             <>
-              {password ? (<UserInputs>
+              {newPassword ? (<UserInputs>
                 <TextField
-                  name="pass"
+                  name="password"
                   type="password"
                   label="Password"
                   variant="filled"
                   onChange={(e) => {
-                    inputUserChange(e.target.name, e.target.value)
+                    inputUserChange(e.target.name, e.target.value);
                   }}
                 />
               </UserInputs>
@@ -124,8 +126,8 @@ const User: React.FC<Props> = ({
             </>
 
             <Buttons>
-              {!password ?
-                (<Button
+              {!newPassword
+                ? (<Button
                   variant="contained"
                   color="primary"
                   type="button"
@@ -171,7 +173,7 @@ const User: React.FC<Props> = ({
               <input name="avatar" type="file" style={{
                 position: 'absolute',
                 transition: '.5s ease',
-                opacity: '0'
+                opacity: '0',
               }}
                 onChange={editPhoto}
               />
@@ -200,8 +202,24 @@ const User: React.FC<Props> = ({
 };
 
 const mapStateToProps = (state: AppStateType) => {
-  const { userReducer: { user: { name, email, pass, dob, avatarUrl } } } = state
-  return { name, email, pass, dob, avatarUrl };
+  const {
+    userReducer: {
+      user: {
+        name,
+        email,
+        password,
+        dob,
+        avatarUrl,
+      },
+    },
+  } = state;
+  return {
+    name,
+    email,
+    password,
+    dob,
+    avatarUrl,
+  };
 };
 
 const mapDispatchToProps = {
@@ -215,10 +233,11 @@ const mapDispatchToProps = {
 type StateProps = ReturnType<typeof mapStateToProps>;
 type DispatchProps = typeof mapDispatchToProps;
 
-interface OwnProps { };
+interface OwnProps { }
 
 type Props = StateProps & DispatchProps & OwnProps;
 
 export default connect<StateProps, DispatchProps, OwnProps>(
   mapStateToProps,
-  mapDispatchToProps)(User);
+  mapDispatchToProps,
+)(User);

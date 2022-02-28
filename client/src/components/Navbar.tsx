@@ -1,5 +1,5 @@
-import React from "react";
-import { Link } from "react-router-dom";
+import React from 'react';
+import { Link } from 'react-router-dom';
 
 import {
   AppBar,
@@ -10,15 +10,13 @@ import {
   CssBaseline,
   List,
   Divider,
-} from "@mui/material"
+} from '@mui/material';
 import HowToRegIcon from '@mui/icons-material/HowToReg';
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 import LoginIcon from '@mui/icons-material/Login';
 import FaceIcon from '@mui/icons-material/Face';
 
-const Navbar: React.FC = () => {
-
-  return (
+const Navbar: React.FC = () => (
     <Box sx={{ display: 'flex' }}>
       <CssBaseline />
       <AppBar >
@@ -65,7 +63,6 @@ const Navbar: React.FC = () => {
         Книга по цене
       </List>
     </ Box>
-  );
-};
+);
 
 export default Navbar;

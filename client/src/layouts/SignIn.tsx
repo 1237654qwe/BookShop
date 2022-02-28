@@ -1,25 +1,33 @@
-import React from "react";
+/* eslint-disable import/no-duplicates */
+/* eslint-disable import/extensions */
+/* eslint-disable import/no-unresolved */
+/* eslint-disable no-use-before-define */
+import React from 'react';
 import { connect } from 'react-redux';
-import { Link } from "react-router-dom";
+import { Link } from 'react-router-dom';
 
-import { Container, Title, Inputs, Buttons } from '../api/Styled';
 import Button from '@mui/material/Button';
 import TextField from '@mui/material/TextField';
 import Typography from '@mui/material/Typography';
-import { SignInContainer } from '../api/Styled';
+import {
+  Container,
+  Title,
+  Inputs,
+  Buttons,
+} from '../style/Styled';
 
+import { SignInContainer } from '../style/Styled';
 import { AppStateType } from '../redux/store';
-import { signIn, changeInput } from "../redux/auth/actions";
+import { signIn, changeInput } from '../redux/auth/actions';
 
 const SignIn: React.FC<Props> = ({
   email,
-  pass,
+  password,
   login,
-  inputChange
+  inputChange,
 }) => {
-
   const onClickLogin = () => {
-    login(email, pass);
+    login(email, password);
   };
 
   return (
@@ -37,19 +45,19 @@ const SignIn: React.FC<Props> = ({
               variant="filled"
               value={email}
               onChange={(e) => {
-                inputChange(e.target.name, e.target.value)
+                inputChange(e.target.name, e.target.value);
               }}
             />
           </Inputs>
           <Inputs>
             <TextField
-              name="pass"
+              name="password"
               type="password"
               label="Password"
               variant="filled"
-              value={pass}
+              value={password}
               onChange={(e) => {
-                inputChange(e.target.name, e.target.value)
+                inputChange(e.target.name, e.target.value);
               }}
             />
           </Inputs>
@@ -77,8 +85,8 @@ const SignIn: React.FC<Props> = ({
 };
 
 const mapStateToProps = (state: AppStateType) => {
-  const { authReducer: { email, pass } } = state;
-  return { email, pass };
+  const { authReducer: { email, password } } = state;
+  return { email, password };
 };
 
 const mapDispatchToProps = {
@@ -89,11 +97,11 @@ const mapDispatchToProps = {
 type StateProps = ReturnType<typeof mapStateToProps>;
 type DispatchProps = typeof mapDispatchToProps;
 
-interface OwnProps { };
+interface OwnProps { }
 
 type Props = StateProps & DispatchProps & OwnProps;
 
 export default connect<StateProps, DispatchProps, OwnProps>(
   mapStateToProps,
-  mapDispatchToProps
+  mapDispatchToProps,
 )(SignIn);

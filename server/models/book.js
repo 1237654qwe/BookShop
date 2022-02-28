@@ -1,46 +1,45 @@
-
-const Sequelize = require("sequelize");
+const Sequelize = require('sequelize');
 const { DataTypes } = require('sequelize');
 
-const { sequelize } = require('../config/db.js');
+const { sequelize } = require('../config/db');
 
-const Book = sequelize.define("books", {
+const Book = sequelize.define('books', {
   id: {
     type: Sequelize.INTEGER,
     autoIncrement: true,
     primaryKey: true,
-    allowNull: false
+    allowNull: false,
   },
   title: {
     type: Sequelize.STRING,
-    allowNull: false
+    allowNull: false,
   },
   author: {
     type: Sequelize.STRING,
-    allowNull: false
+    allowNull: false,
   },
   description: {
     type: Sequelize.STRING,
-    allowNull: false
+    allowNull: false,
   },
   genre: {
     type: Sequelize.STRING,
-    allowNull: false
+    allowNull: false,
   },
   price: {
     type: Sequelize.INTEGER,
-    allowNull: false
+    allowNull: false,
   },
   rating: {
     type: Sequelize.INTEGER,
-    allowNull: false
+    allowNull: false,
   },
   coverUrl: {
     type: DataTypes.STRING,
-    allowNull: true
+    allowNull: true,
   },
 }, { tableName: 'books' });
 
 module.exports = {
   Book,
-}
+};

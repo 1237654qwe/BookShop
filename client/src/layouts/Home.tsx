@@ -1,3 +1,6 @@
+/* eslint-disable no-use-before-define */
+/* eslint-disable import/extensions */
+/* eslint-disable import/no-unresolved */
 import React, { useEffect } from 'react';
 import { connect } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
@@ -13,22 +16,22 @@ import {
   Typography,
   Box,
   Slider,
-  Checkbox
+  Checkbox,
 } from '@mui/material';
+import MuiInput from '@mui/material/Input';
+import { styled } from '@mui/material/styles';
 import {
   HomeContainer,
   HomeContent,
   HomeFilter,
   HomeBooks,
   PaginationContainer,
-  CardBox
-} from '../api/Styled';
-import MuiInput from '@mui/material/Input';
-import { styled } from '@mui/material/styles';
+  CardBox,
+} from '../style/Styled';
 
 import {
   loadBooks,
-  setBooksPage
+  loadFilters,
 } from '../redux/books/actions';
 import { AppStateType } from '../redux/store';
 
@@ -37,34 +40,43 @@ const Input = styled(MuiInput)`
 `;
 
 const Home: React.FC<Props> = ({
-  books = [], page, limit, count, booksLoad, booksPageSet
+  books = [], count, filters, booksLoad, filtersLoad,
 }) => {
-
   const [selectedPage, setSelectedPage] = React.useState<number>(1);
   const [author, setAuthor] = React.useState<string>('');
   const [genre, setGenre] = React.useState<string[]>([]);
   const [price, setPrice] = React.useState<number[]>([0, 5000]);
 
+  const countPage = Math.ceil(count / 9);
+  const navigate = useNavigate();
 
-  const countPage = Math.ceil(count / 9)
-
-  const navigate = useNavigate()
+  useEffect(() => {
+    filtersLoad();
+  }, []);
 
   useEffect(() => {
     const timer = setTimeout(() => {
-      booksLoad(selectedPage, 9, author, genre, price)
+      booksLoad(selectedPage, 9, author, genre, price);
       if (author || genre) {
         navigate({
           pathname: '/',
-          search: `?page=${selectedPage}&author=${author}&genre[]=${genre}&price[]=${price[0]}&price[]=${price[1]}`
-        })
+          search: `?page=${selectedPage}&author=${author}&genre[]=${genre}&price[]=${price[0]}&price[]=${price[1]}`,
+        });
       }
-    }, 500)
-    return () => clearTimeout(timer)
-  }, [selectedPage, author, genre, price]);
+    }, 500);
+    return () => clearTimeout(timer);
+  }, [selectedPage, author, genre, price, navigate]);
 
   const handleChangeSlider = (e: Event, newPrice: number | number[]) => {
     setPrice(newPrice as number[]);
+  };
+
+  const handleInputChangeStartPrice = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setPrice([Number(event.target.value), price[1]]);
+  };
+
+  const handleInputChangeLastPrice = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setPrice([price[0], Number(event.target.value)]);
   };
 
   const handleChangePage = (e: React.ChangeEvent<unknown>, value: number) => {
@@ -72,22 +84,22 @@ const Home: React.FC<Props> = ({
   };
 
   const handleChangeAuthor = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const isChecked = e.target.checked
+    const isChecked = e.target.checked;
     if (isChecked) {
-      setAuthor(e.target.value)
+      setAuthor(e.target.value);
     } else {
-      setAuthor("")
+      setAuthor('');
     }
-  }
+  };
 
   const handleChangeGenre = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const isChecked = e.target.checked
+    const isChecked = e.target.checked;
     if (isChecked) {
-      setGenre([...genre, e.target.value])
+      setGenre([...genre, e.target.value]);
     } else {
-      setGenre(genre.filter((item) => item != e.target.value))
+      setGenre(genre.filter((item) => item !== e.target.value));
     }
-  }
+  };
 
   return (
     <HomeContainer>
@@ -96,123 +108,34 @@ const Home: React.FC<Props> = ({
           <div>
             <Typography variant="h6">Автор</Typography>
           </div>
-          <div>
+          {filters.author.map((item) => (
+            <div>
             <Checkbox
               name="author"
-              value="Хоррор Хоррорович"
+              value={item}
               onChange={handleChangeAuthor}
-              checked={author === "Хоррор Хоррорович"} />
-            <label>Хоррор Хоррорович</label>
+              checked={author === `${item}`} />
+            <label>{item}</label>
           </div>
-          <div>
-            <Checkbox
-              name="author"
-              value="Адвенчур Адвенчурович"
-              onChange={handleChangeAuthor}
-              checked={author === "Адвенчур Адвенчурович"} />
-            <label>Адвенчур Адвенчурович</label>
-          </div>
-          <div>
-            <Checkbox
-              name="author"
-              value="Романова Романовна"
-              onChange={handleChangeAuthor}
-              checked={author === "Романова Романовна"} />
-            <label>Романова Романовна</label>
-          </div>
-          <div>
-            <Checkbox
-              name="author"
-              value="Роберт Маккаммон"
-              onChange={handleChangeAuthor}
-              checked={author === "Роберт Маккаммон"} />
-            <label>Роберт Маккаммон</label>
-          </div>
-          <div>
-            <Checkbox
-              name="author"
-              value="О Головина"
-              onChange={handleChangeAuthor}
-              checked={author === "О Головина"} />
-            <label>О. Головина</label>
-          </div>
-          <div>
-            <Checkbox
-              name="author"
-              value="Ульяна Соболева"
-              onChange={handleChangeAuthor}
-              checked={author === "Ульяна Соболева"} />
-            <label>Ульяна Соболева</label>
-          </div>
-          <div>
-            <Checkbox
-              name="author"
-              value="Джей Крауновер"
-              onChange={handleChangeAuthor}
-              checked={author === "Джей Крауновер"} />
-            <label>Джей Крауновер</label>
-          </div>
-          <div>
-            <Checkbox
-              name="author"
-              value="Б Ходж"
-              onChange={handleChangeAuthor}
-              checked={author === "Б Ходж"} />
-            <label>Б. Ходж</label>
-          </div>
-          <div>
-            <Checkbox
-              name="author"
-              value="Э Джорж"
-              onChange={handleChangeAuthor}
-              checked={author === "Э Джорж"} />
-            <label>Э. Джорж</label>
-          </div>
-          <div>
-            <Checkbox
-              name="author"
-              value="Марк Твен"
-              onChange={handleChangeAuthor}
-              checked={author === "Марк Твен"} />
-            <label>Марк Твен</label>
-          </div>
-          <div>
-            <Checkbox
-              name="author"
-              value="Стивен Кинг"
-              onChange={handleChangeAuthor}
-              checked={author === "Стивен Кинг"} />
-            <label>Стивен Кинг</label>
-          </div>
+          ))}
           <div>
             <Typography variant="h6">Жанр</Typography>
           </div>
-          <div>
+          {filters.genre.map((item) => (
+            <div>
             <Checkbox
               name="gener"
-              value="Ужасы"
+              value={item}
               onChange={handleChangeGenre} />
-            <label>Ужасы</label>
+            <label>{item}</label>
           </div>
-          <div>
-            <Checkbox
-              name="gener"
-              value="Приключения"
-              onChange={handleChangeGenre} />
-            <label>Приключения</label>
-          </div>
-          <div>
-            <Checkbox
-              name="gener"
-              value="Романы"
-              onChange={handleChangeGenre} />
-            <label>Романы</label>
-          </div>
+          ))}
           <div>
             <Typography variant="h6">Цена</Typography>
           </div>
           <Box sx={{ width: 300 }}>
-            <p>От <Input value={price[0]} /> до <Input value={price[1]} /></p>
+            <p>От <Input value={price[0]} onChange={handleInputChangeStartPrice}/>
+            до <Input value={price[1]} onChange={handleInputChangeLastPrice}/></p>
             <Slider
               getAriaLabel={() => 'Temperature range'}
               value={price}
@@ -266,23 +189,33 @@ const Home: React.FC<Props> = ({
 };
 
 const mapStateToProps = (state: AppStateType) => {
-  const { booksReducer: { books, page, limit, count } } = state;
-  return { books, page, limit, count };
+  const {
+    booksReducer: {
+      books,
+      page,
+      limit,
+      count,
+      filters,
+    },
+  } = state;
+  return {
+    books, page, limit, count, filters,
+  };
 };
 
 const mapDispatchToProps = {
   booksLoad: loadBooks,
-  booksPageSet: setBooksPage
+  filtersLoad: loadFilters,
 };
 
 type StateProps = ReturnType<typeof mapStateToProps>;
 type DispatchProps = typeof mapDispatchToProps;
 
-interface OwnProps { };
+interface OwnProps { }
 
 type Props = StateProps & DispatchProps & OwnProps;
 
 export default connect<StateProps, DispatchProps, OwnProps>(
   mapStateToProps,
-  mapDispatchToProps
+  mapDispatchToProps,
 )(Home);
