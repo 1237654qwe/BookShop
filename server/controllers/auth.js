@@ -1,5 +1,4 @@
 const bcrypt = require('bcrypt');
-const jwt = require('jsonwebtoken');
 
 const { User } = require('../models/user');
 const { generateToken } = require('../utils/generateToken')
@@ -26,7 +25,6 @@ class AuthController {
         })
 
         await user.save();
-        console.log(user.id)
         const token = generateToken(user.id);
         res.status(201).json({ token });
       }
@@ -39,7 +37,6 @@ class AuthController {
 
   static async signIn(req, res) {
     try {
-      console.log(req.body.email)
       const candidate = await User.findOne({ email: req.body.email });
 
       if (candidate) {
