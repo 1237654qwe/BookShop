@@ -34,7 +34,6 @@ const bookReducer = (state: IBookState = initialState, action: BookActions): IBo
       return {
         ...state,
         loading: false,
-        // book: action.payload
       };
     default:
       return state

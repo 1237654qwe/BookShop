@@ -6,21 +6,37 @@ import {
   BooksActionTypes,
 } from "../types"
 
-export const loadBooks = (page: 1, limit = 10) => {
+export const loadBooks = (
+  page: number,
+  limit: number,
+  author: string,
+  genre: string[],
+  price: number[]
+) => {
   return async (dispatch: Dispatch<BooksActions>) => {
     try {
       dispatch({
         type: BooksActionTypes.BOOKS_LOADING
       });
 
-      const data = await axios.get(`http://localhost:3001/книжки, когда они будут`, {
-        params: { _page: page, _limit: limit }
+      const data = await axios({
+        method: 'get',
+        url: 'http://localhost:3001/api/books',
+        params: {
+          page: page,
+          limit: limit,
+          author: author,
+          genre: genre,
+          price: price
+        }
       });
 
       dispatch({
         type: BooksActionTypes.BOOKS_SUCCESS,
         payload: data.data
       });
+
+
 
     } catch (e) {
       dispatch({

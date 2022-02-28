@@ -1,9 +1,6 @@
 import React, { useEffect, useState } from 'react';
 
 import { connect } from 'react-redux';
-// import { useForm } from "react-hook-form"
-// import { yupResolver } from "@hookform/resolvers/yup"
-// import * as yup from "yup"
 
 import Button from '@mui/material/Button';
 import TextField from '@mui/material/TextField';

@@ -6,7 +6,8 @@ import {
 
 export interface IBooksState {
   loading: boolean,
-  books: BooksInfo[]
+  books: BooksInfo[],
+  count: number,
   page: number,
   limit: number,
 };
@@ -14,6 +15,7 @@ export interface IBooksState {
 const initialState: IBooksState = {
   loading: false,
   books: [],
+  count: 0,
   page: 1,
   limit: 10,
 };
@@ -34,7 +36,8 @@ const booksReducer = (state: IBooksState = initialState, action: BooksActions): 
       return {
         ...state,
         loading: false,
-        books: action.payload
+        books: action.payload.books,
+        count: action.payload.count
       };
     case BooksActionTypes.SET_BOOKS_PAGE:
       return {

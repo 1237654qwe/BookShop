@@ -1,9 +1,14 @@
 export type BooksInfo = {
   id: number,
   title: string,
-  img: string,
+  coverUrl: string,
   author: string,
   price: number,
+};
+
+export type BooksPayload = {
+  books: BooksInfo[],
+  count: number
 };
 
 export enum BooksActionTypes {
@@ -24,7 +29,7 @@ interface IBooksFailed {
 
 interface IBooksSuccess {
   type: BooksActionTypes.BOOKS_SUCCESS,
-  payload: BooksInfo[]
+  payload: BooksPayload
 };
 
 interface ISetBooksPage {
