@@ -2,6 +2,8 @@ const Sequelize = require('sequelize');
 const { DataTypes } = require('sequelize');
 
 const { sequelize } = require('../config/db');
+const { Comment } = require('./comment');
+const { Rating } = require('./rating');
 
 const User = sequelize.define('users', {
   id: {
@@ -34,6 +36,8 @@ const User = sequelize.define('users', {
     allowNull: true,
   },
 }, { tableName: 'users' });
+User.hasMany(Comment);
+User.hasMany(Rating);
 
 module.exports = {
   User,

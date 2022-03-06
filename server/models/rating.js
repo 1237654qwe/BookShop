@@ -2,7 +2,7 @@ const Sequelize = require('sequelize');
 
 const { sequelize } = require('../config/db');
 
-const Comment = sequelize.define('comments', {
+const Rating = sequelize.define('ratings', {
   id: {
     type: Sequelize.INTEGER,
     autoIncrement: true,
@@ -13,20 +13,16 @@ const Comment = sequelize.define('comments', {
     type: Sequelize.INTEGER,
     allowNull: false,
   },
-  parentId: {
-    type: Sequelize.INTEGER,
-    allowNull: true,
-  },
   bookId: {
     type: Sequelize.INTEGER,
     allowNull: false,
   },
-  text: {
-    type: Sequelize.STRING,
+  rating: {
+    type: Sequelize.INTEGER,
     allowNull: false,
   },
-}, { tableName: 'comments' });
+}, { tableName: 'ratings' });
 
 module.exports = {
-  Comment,
+  Rating,
 };

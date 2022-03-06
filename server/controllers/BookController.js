@@ -1,7 +1,10 @@
+/* eslint-disable no-unused-vars */
 const { Op } = require('@sequelize/core');
 const _ = require('lodash');
 
 const { Book } = require('../models/book');
+const { Rating } = require('../models/rating');
+const { User } = require('../models/user');
 const { Comment } = require('../models/comment');
 
 class BookController {
@@ -70,7 +73,16 @@ class BookController {
         limit: newLimit,
       });
 
-      res.json({ count, books: rows });
+      const allBookRating = await Promise.all(rows.map(async (item) => {
+        const raitings = await Rating.findAll({
+          where: {
+            bookId: item.id,
+          },
+        });
+        const rating = raitings.reduce((acc, cur) => acc + cur.rating, 0) / raitings.length;
+        return { ...item.dataValues, rating };
+      }));
+      res.json({ count, books: allBookRating });
     } catch (e) {
       res.status(500).json(e);
     }
@@ -78,8 +90,39 @@ class BookController {
 
   static async getOneBook(req, res) {
     try {
-      const book = await Book.findOne({ id: req.body.id });
+      const book = await Book.findOne({
+        where: {
+          id: req.params.id,
+        },
+      });
       res.json(book);
+    } catch (e) {
+      res.status(500).json(e);
+    }
+  }
+
+  static async getComments(req, res) {
+    try {
+      const comments = await Comment.findAll({
+        where: {
+          bookId: req.params.id,
+          parentId: null,
+        },
+      });
+      const newComments = await Promise.all(comments.map(async (item) => {
+        const parentIdcomments = await Comment.findAll({
+          where: {
+            parentId: item.id,
+          },
+        });
+        const user = await User.findByPk(item.userId);
+        const childComments = await Promise.all(parentIdcomments.map(async (comment) => {
+          const childUser = await User.findByPk(item.userId);
+          return { ...comment.dataValues, user: childUser };
+        }));
+        return { ...item.dataValues, user, comments: childComments };
+      }));
+      res.json(newComments);
     } catch (e) {
       res.status(500).json(e);
     }
@@ -87,14 +130,16 @@ class BookController {
 
   static async createComment(req, res) {
     try {
-      const { user, text } = req.body;
+      const book = await Book.findByPk(req.params.id);
 
-      const comment = await Comment.create({
-        user,
-        text,
+      const newComment = await book.createComment({
+        bookId: req.params.id,
+        userId: req.user.id,
+        parentId: req.body.parentId,
+        text: req.body.text,
       });
 
-      res.json(comment);
+      res.json(newComment);
     } catch (e) {
       res.status(500).json(e);
     }
@@ -102,20 +147,27 @@ class BookController {
 
   static async updateRating(req, res) {
     try {
-      const { rating } = req.body;
-
-      const ratingBook = await Book.update(
-        {
-          rating,
+      const rating = await Rating.findOne({
+        where: {
+          bookId: req.params.id,
+          userId: req.user.id,
         },
-        {
-          where: {
-            id: req.params.id,
-          },
-        },
-      );
+      });
 
-      res.json(ratingBook);
+      if (rating) {
+        rating.rating = req.body.rating;
+        await rating.save();
+        res.json(rating);
+      } else {
+        const book = await Book.findByPk(req.params.id);
+
+        const newRating = await book.createRating({
+          rating: req.body.rating,
+          bookId: req.params.id,
+          userId: req.user.id,
+        });
+        res.json(newRating);
+      }
     } catch (e) {
       res.status(500).json(e);
     }

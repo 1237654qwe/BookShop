@@ -35,7 +35,11 @@ class AuthController {
 
   static async signIn(req, res) {
     try {
-      const candidate = await User.findOne({ email: req.body.email });
+      const candidate = await User.findOne({
+        where: {
+          email: req.body.email,
+        },
+      });
 
       if (candidate) {
         const hashPass = bcrypt.hashSync(req.body.password, candidate.salt);
