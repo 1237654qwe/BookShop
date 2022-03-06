@@ -3,15 +3,21 @@
 export type BooksInfo = {
   id: number,
   title: string,
-  coverUrl: string,
   author: string,
-  price: number,
+  description: string
   genre: string,
+  price: number,
+  rating: number,
+  coverUrl: string,
 };
 
 export type BooksPayload = {
   books: BooksInfo[],
   count: number,
+};
+
+export type OneBookPayload = {
+  book: BooksInfo,
 };
 
 export type BooksFiltersPayload = {
@@ -26,6 +32,10 @@ export enum BooksActionTypes {
   BOOKS_FILTERS_LOADING = 'BOOKS_FILTERS_LOADING',
   BOOKS_FILTERS_FAILED = 'BOOKS_FILTERS_FAILED',
   BOOKS_FILTERS_SUCCESS = 'BOOKS_FILTERS_SUCCESS',
+  ONE_BOOK_LOADING = 'ONE_BOOK_LOADING',
+  ONE_BOOK_FAILED = 'ONE_BOOK_FAILED',
+  ONE_BOOK_SUCCESS = 'ONE_BOOK_SUCCESS',
+  COMMENT_INPUT = 'COMMENT_INPUT'
 }
 
 interface IBooksLoading {
@@ -56,10 +66,27 @@ interface IBooksFiltersSuccess {
   payload: BooksFiltersPayload
 }
 
+interface IOneBookLoading {
+  type: BooksActionTypes.ONE_BOOK_LOADING,
+}
+
+interface IOneBookFailed {
+  type: BooksActionTypes.ONE_BOOK_FAILED,
+  payload: string
+}
+
+interface IOneBookSuccess {
+  type: BooksActionTypes.ONE_BOOK_SUCCESS,
+  payload: OneBookPayload
+}
+
 export type BooksActions =
   IBooksLoading |
   IBooksFailed |
   IBooksSuccess |
   IBooksFiltersLoading |
   IBooksFiltersFailed |
-  IBooksFiltersSuccess
+  IBooksFiltersSuccess |
+  IOneBookLoading |
+  IOneBookFailed |
+  IOneBookSuccess

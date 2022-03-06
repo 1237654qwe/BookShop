@@ -44,7 +44,7 @@ const SignIn: React.FC<Props> = ({
               label="Email"
               variant="filled"
               value={email}
-              onChange={(e) => {
+              onChange={(e: { target: { name: string; value: string; }; }) => {
                 inputChange(e.target.name, e.target.value);
               }}
             />
@@ -56,7 +56,7 @@ const SignIn: React.FC<Props> = ({
               label="Password"
               variant="filled"
               value={password}
-              onChange={(e) => {
+              onChange={(e: { target: { name: string; value: string; }; }) => {
                 inputChange(e.target.name, e.target.value);
               }}
             />
@@ -65,14 +65,12 @@ const SignIn: React.FC<Props> = ({
             <Button
               variant="contained"
               color="primary"
-              type="submit"
               onClick={onClickLogin}
             >
               Login
             </Button>
             <Button
               color="inherit"
-              type="submit"
             >
               <Link to="/signUp"> Create an account</Link>
             </Button>

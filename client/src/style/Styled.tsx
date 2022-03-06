@@ -98,3 +98,49 @@ export const CardBox = styled.div`
 width: 350px;
 margin 10px;
 `;
+
+export const Tabs = styled.div`
+  margin-left: 5px;
+`;
+
+export const ModalContent = styled.div`
+  display: flex;
+  justify-content: space-around;
+`;
+
+export const ModalImg = styled.div`
+  display: flex;
+  width 40%;
+`;
+
+export const ModalTab = styled.div`
+  display: flex;
+  width 55%;
+`;
+
+export const TitleArea = styled.div`
+  display: flex;
+  justify-content: space-between;
+`;
+
+export const StarArea = styled.div`
+  display: flex;
+`;
+
+export const Comments = styled.div`
+  display: flex;
+  flex-direction: column;
+`;
+
+export const ChildComments = styled.div`
+  display: flex;
+  flex-direction: column;
+  margin-left: 30px;
+`;
+
+export const CommentsForm = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  margin-top: 20px;
+`;

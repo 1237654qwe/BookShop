@@ -82,7 +82,7 @@ const User: React.FC<Props> = ({
                 label="Name"
                 variant="filled"
                 value={name}
-                onChange={(e) => {
+                onChange={(e: { target: { name: string; value: string; }; }) => {
                   inputUserChange(e.target.name, e.target.value);
                 }}
               />
@@ -93,7 +93,7 @@ const User: React.FC<Props> = ({
                 label="Email"
                 variant="filled"
                 value={email}
-                onChange={(e) => {
+                onChange={(e: { target: { name: string; value: string; }; }) => {
                   inputUserChange(e.target.name, e.target.value);
                 }}
               />
@@ -105,7 +105,7 @@ const User: React.FC<Props> = ({
                 label="Day of Birthday"
                 variant="filled"
                 value={dob}
-                onChange={(e) => {
+                onChange={(e: { target: { name: string; value: string; }; }) => {
                   inputUserChange(e.target.name, e.target.value);
                 }}
               />
@@ -117,7 +117,7 @@ const User: React.FC<Props> = ({
                   type="password"
                   label="Password"
                   variant="filled"
-                  onChange={(e) => {
+                  onChange={(e: { target: { name: string; value: string; }; }) => {
                     inputUserChange(e.target.name, e.target.value);
                   }}
                 />

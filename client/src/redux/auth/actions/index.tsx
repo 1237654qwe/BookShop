@@ -24,7 +24,7 @@ export const signUp = (
 
     const data = await axios({
       method: 'post',
-      url: `${baseUrl} + ${signUpLink}`,
+      url: `${baseUrl}${signUpLink}`,
       data: body,
     });
 
@@ -46,7 +46,7 @@ export const signIn = (
 
     const data = await axios({
       method: 'post',
-      url: `${baseUrl} + ${signInLink}`,
+      url: `${baseUrl}${signInLink}`,
       data: body,
     });
 

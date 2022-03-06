@@ -4,9 +4,11 @@ import { combineReducers } from 'redux';
 import userReducer from './user/reducers/index';
 import booksReducer from './books/reducers/index';
 import authReducer from './auth/reducers/index';
+import commentsReducer from './comments/reducers/index';
 
 export default () => combineReducers({
   userReducer,
   booksReducer,
   authReducer,
+  commentsReducer,
 });

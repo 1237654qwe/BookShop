@@ -16,6 +16,7 @@ export interface IBooksState {
   loading: boolean,
   filters: IFilters,
   books: BooksInfo[],
+  book: BooksInfo,
   count: number,
   page: number,
   limit: number,
@@ -28,9 +29,19 @@ const initialState: IBooksState = {
     genre: [],
   },
   books: [],
+  book: {
+    id: 0,
+    title: '',
+    author: '',
+    description: '',
+    genre: '',
+    price: 0,
+    rating: 0,
+    coverUrl: '',
+  },
   count: 0,
   page: 1,
-  limit: 10,
+  limit: 9,
 };
 
 const booksReducer = (state: IBooksState = initialState, action: BooksActions): IBooksState => {
@@ -70,6 +81,22 @@ const booksReducer = (state: IBooksState = initialState, action: BooksActions): 
           author: action.payload.filtredAuthor,
           genre: action.payload.filtredGenre,
         },
+      };
+    case BooksActionTypes.ONE_BOOK_FAILED:
+      return {
+        ...state,
+        loading: false,
+      };
+    case BooksActionTypes.ONE_BOOK_LOADING:
+      return {
+        ...state,
+        loading: true,
+      };
+    case BooksActionTypes.ONE_BOOK_SUCCESS:
+      return {
+        ...state,
+        loading: false,
+        book: action.payload.book,
       };
     default:
       return state;
