@@ -26,7 +26,7 @@ export const loadUser = () => async (dispatch: Dispatch<UserActions>) => {
 
     const data = await axios({
       method: 'get',
-      url: `${baseUrl} + ${getOneUserLink}`,
+      url: `${baseUrl}${getOneUserLink}`,
       headers: { Authorization: `Bearer ${token}` },
     });
 
@@ -58,7 +58,7 @@ export const updateUser = (
 
     await axios({
       method: 'put',
-      url: `${baseUrl} + ${updateUserLink}`,
+      url: `${baseUrl}${updateUserLink}`,
       data: body,
       headers: { Authorization: `Bearer ${token}` },
     });
@@ -77,7 +77,7 @@ export const updateUserPass = (password: string) => async () => {
 
     await axios({
       method: 'put',
-      url: `${baseUrl} + ${uploadAvatarLink}`,
+      url: `${baseUrl}${uploadAvatarLink}`,
       data: body,
       headers: { Authorization: `Bearer ${token}` },
     });

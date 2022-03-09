@@ -104,7 +104,7 @@ const User: React.FC<Props> = ({
                 type="text"
                 label="Day of Birthday"
                 variant="filled"
-                value={dob}
+                value={dob.substr(0, 10)}
                 onChange={(e: { target: { name: string; value: string; }; }) => {
                   inputUserChange(e.target.name, e.target.value);
                 }}
@@ -184,7 +184,7 @@ const User: React.FC<Props> = ({
           <div className='container-form'>
             <p>Имя: {name}</p>
             <p>Email: {email}</p>
-            <p>Дата рождения: {dob}</p>
+            <p>Дата рождения: {dob.substr(0, 10)}</p>
             <Button
               variant="contained"
               color="primary"
