@@ -19,8 +19,8 @@ module.exports = function (req, res, next) {
     req.user = decodedData;
     next();
   } catch (e) {
-    return res.status(401).json({
-      message: 'User is not authorized',
+    return res.status(403).json({
+      message: 'Token expired',
     });
   }
 };
