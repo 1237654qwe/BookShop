@@ -2,6 +2,7 @@
 /* eslint-disable import/extensions */
 /* eslint-disable import/no-unresolved */
 import React, { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 import { connect } from 'react-redux';
 
@@ -15,6 +16,8 @@ import {
   Title,
   UserInputs,
   Buttons,
+  UserInfo,
+  UserButtons,
   Imgs,
 } from '../style/Styled';
 import {
@@ -39,6 +42,7 @@ const User: React.FC<Props> = ({
 }) => {
   const [edit, setEdit] = useState(false);
   const [newPassword, setNewPassword] = useState(false);
+  const navigate = useNavigate();
 
   useEffect(() => {
     userLoad();
@@ -127,14 +131,15 @@ const User: React.FC<Props> = ({
 
             <Buttons>
               {!newPassword
-                ? (<Button
-                  variant="contained"
-                  color="primary"
-                  type="button"
-                  onClick={editPasswordHandler}
-                >
-                  Изменить пароль
-                </Button>
+                ? (
+                  <Button
+                    variant="contained"
+                    color="primary"
+                    type="button"
+                    onClick={editPasswordHandler}
+                  >
+                    Изменить пароль
+                  </Button>
                 ) : (
                   <Button
                     variant="contained"
@@ -143,7 +148,9 @@ const User: React.FC<Props> = ({
                     onClick={saveEditPasswordHandler}
                   >
                     Сохранить пароль
-                  </Button>)}
+                  </Button>
+                )
+              }
               <Button
                 variant="contained"
                 color="primary"
@@ -174,27 +181,45 @@ const User: React.FC<Props> = ({
                 position: 'absolute',
                 transition: '.5s ease',
                 opacity: '0',
-              }}
+              }
+              }
                 onChange={editPhoto}
               />
               Выбрать фото
             </Button>
 
           </Imgs>
-          <div className='container-form'>
+          <UserInfo>
             <p>Имя: {name}</p>
             <p>Email: {email}</p>
             <p>Дата рождения: {dob.substr(0, 10)}</p>
-            <Button
-              variant="contained"
-              color="primary"
-              type="button"
-              onClick={editHandler}
-            >
-              Редактировать
-            </Button>
-          </div>
-
+            <UserButtons>
+              <Button
+                variant="contained"
+                color="primary"
+                type="button"
+                onClick={editHandler}
+              >
+                Редактировать
+              </Button>
+            </UserButtons>
+            <UserButtons>
+              <Button
+                variant="contained"
+                color="primary"
+                type="button"
+                onClick={() => {
+                  localStorage.removeItem('token');
+                  navigate({
+                    pathname: '/',
+                  });
+                }}
+              >
+                Выйти
+              </Button>
+            </UserButtons>
+          </UserInfo>
+          <UserButtons />
         </Container>
       )}
     </>

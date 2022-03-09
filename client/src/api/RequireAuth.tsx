@@ -5,7 +5,7 @@ const RequireAuth: React.FC = () => {
   const token = localStorage.getItem('token');
 
   return (
-    token ? <Outlet /> : <Navigate to="/signIn" />
+    token ? <Outlet /> : <Navigate to="/sign-in" />
   );
 };
 

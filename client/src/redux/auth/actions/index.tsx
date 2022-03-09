@@ -1,10 +1,10 @@
-/* eslint-disable no-console */
 /* eslint-disable import/extensions */
 /* eslint-disable import/no-unresolved */
-import axios from 'axios';
-import { baseUrl, signInLink, signUpLink } from '../../../api/links';
+import { Dispatch } from 'redux';
+import { signInRequest, signUpRequest } from '../../../api/axios';
 
 import {
+  AuthActions,
   AuthActionTypes,
 } from '../types';
 
@@ -13,7 +13,8 @@ export const signUp = (
   email: string,
   password: string,
   dob: string,
-) => async () => {
+  cb: () => void,
+) => async (dispatch: Dispatch<AuthActions>) => {
   try {
     const body = {
       name,
@@ -22,37 +23,36 @@ export const signUp = (
       dob,
     };
 
-    const data = await axios({
-      method: 'post',
-      url: `${baseUrl}${signUpLink}`,
-      data: body,
-    });
-
+    const data = await signUpRequest(body);
     localStorage.setItem('token', data.data.token);
-  } catch (e) {
-    console.log(e);
+    cb();
+  } catch (e: any) {
+    dispatch({
+      type: AuthActionTypes.SIGNUP_FAIL,
+      payload: e.response.data?.message,
+    });
   }
 };
 
 export const signIn = (
   email: string,
   password: string,
-) => async () => {
+  cb: () => void,
+) => async (dispatch: Dispatch<AuthActions>) => {
   try {
     const body = {
       email,
       password,
     };
 
-    const data = await axios({
-      method: 'post',
-      url: `${baseUrl}${signInLink}`,
-      data: body,
-    });
-
+    const data = await signInRequest(body);
     localStorage.setItem('token', data.data.token);
-  } catch (e) {
-    console.log(e);
+    cb();
+  } catch (e: any) {
+    dispatch({
+      type: AuthActionTypes.SIGNIN_FAIL,
+      payload: e.response.data?.message,
+    });
   }
 };
 

@@ -3,10 +3,10 @@
 /* eslint-disable import/no-unresolved */
 import React from 'react';
 import { connect } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
-import { Link } from 'react-router-dom';
 
 import Button from '@mui/material/Button';
 import TextField from '@mui/material/TextField';
@@ -18,6 +18,7 @@ import {
   Buttons,
   Text,
   SignUpContainer,
+  SignLinks,
 } from '../style/Styled';
 
 import { AppStateType } from '../redux/store';
@@ -51,13 +52,13 @@ const SignUp: React.FC<Props> = ({
   password,
   dob,
   name,
+  signUpError,
   registration,
   inputChange,
 }) => {
   const {
     register,
     handleSubmit,
-    formState: { errors },
     reset,
   } = useForm({
     resolver: yupResolver(schema),
@@ -68,12 +69,19 @@ const SignUp: React.FC<Props> = ({
   };
 
   const onClickRegistrate = () => {
-    registration(name, email, password, dob);
+    registration(name, email, password, dob, navigateHome);
+  };
+
+  const navigate = useNavigate();
+  const navigateHome = () => {
+    navigate({
+      pathname: '/',
+    });
   };
 
   return (
-    <SignUpContainer>
-      <Container >
+    <Container >
+      <SignUpContainer>
         <form onSubmit={handleSubmit(onSubmitHandler)}>
           <Title>
             <Typography variant="h6">Create new account</Typography>
@@ -90,7 +98,7 @@ const SignUp: React.FC<Props> = ({
                 inputChange(e.target.name, e.target.value);
               }}
             />
-            <Text><p>{errors.name?.message}</p></Text>
+            {signUpError ? (<Text><p>{signUpError}</p></Text>) : (<></>)}
           </Inputs>
           <Inputs>
             <TextField
@@ -103,7 +111,7 @@ const SignUp: React.FC<Props> = ({
                 inputChange(e.target.name, e.target.value);
               }}
             />
-            <Text><p>{errors.email?.message}</p></Text>
+            {signUpError ? (<Text><p>{signUpError}</p></Text>) : (<></>)}
           </Inputs>
           <Inputs>
             <TextField
@@ -117,7 +125,7 @@ const SignUp: React.FC<Props> = ({
                 inputChange(e.target.name, e.target.value);
               }}
             />
-            <Text><p>{errors.password?.message}</p></Text>
+            {signUpError ? (<Text><p>{signUpError}</p></Text>) : (<></>)}
           </Inputs>
           <Inputs>
             <TextField
@@ -131,12 +139,10 @@ const SignUp: React.FC<Props> = ({
                 inputChange(e.target.name, e.target.value);
               }}
             />
-            <Text><p>{errors.dob?.message}</p></Text>
+            {signUpError ? (<Text><p>{signUpError}</p></Text>) : (<></>)}
           </Inputs>
           <Buttons>
             <Button
-              variant="contained"
-              color="primary"
               type="submit"
               onClick={onClickRegistrate}
             >
@@ -146,12 +152,12 @@ const SignUp: React.FC<Props> = ({
               color="inherit"
               type="submit"
             >
-              <Link to="/signIn">Already have an account?</Link>
+              <SignLinks to="/sign-in">Already have an account?</SignLinks>
             </Button>
           </Buttons>
         </form>
-      </Container>
-    </SignUpContainer>
+      </SignUpContainer>
+    </Container>
 
   );
 };
@@ -164,6 +170,7 @@ const mapStateToProps = (state: AppStateType) => {
       password,
       dob,
       name,
+      signUpError,
     },
   } = state;
   return {
@@ -171,6 +178,7 @@ const mapStateToProps = (state: AppStateType) => {
     password,
     dob,
     name,
+    signUpError,
   };
 };
 

@@ -1,16 +1,20 @@
 /* eslint-disable no-shadow */
 /* eslint-disable no-unused-vars */
 export type AuthInfo = {
-  email: string,
+  email: string
   password: string
   dob: string
   name: string
+  signInError: string
+  signUpError: string
 };
 
 export enum AuthActionTypes {
   SIGNUP_USER = 'SIGNUP_USER',
   SIGNIN_USER = 'SIGNIN_USER',
-  CHANGE_INPUT = 'CHANGE_INPUT'
+  CHANGE_INPUT = 'CHANGE_INPUT',
+  SIGNIN_FAIL = 'SIGNIN_FAIL',
+  SIGNUP_FAIL = 'SIGNUP_FAIL'
 }
 
 interface ISignInUser {
@@ -28,4 +32,19 @@ interface IChangeInput {
   payload: { name: string, value: string }
 }
 
-export type AuthActions = ISignInUser | ISignUpUser | IChangeInput;
+interface ISignInFail {
+  type: AuthActionTypes.SIGNIN_FAIL,
+  payload: string
+}
+
+interface ISignUpFail {
+  type: AuthActionTypes.SIGNUP_FAIL,
+  payload: string
+}
+
+export type AuthActions =
+  ISignInUser |
+  ISignUpUser |
+  IChangeInput |
+  ISignInFail |
+  ISignUpFail;

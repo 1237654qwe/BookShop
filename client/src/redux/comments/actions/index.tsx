@@ -1,11 +1,9 @@
 /* eslint-disable no-param-reassign */
-/* eslint-disable no-console */
 /* eslint-disable import/prefer-default-export */
 /* eslint-disable import/extensions */
 /* eslint-disable import/no-unresolved */
-import axios from 'axios';
 import { Dispatch } from 'react-redux';
-import { baseUrlforBook, getCommentsLink, createCommentLink } from '../../../api/links';
+import { getCommentsRequest, createCommentRequest } from '../../../api/axios';
 
 import {
   CommentActions,
@@ -18,11 +16,7 @@ export const loadComments = (bookId: number) => async (dispatch: Dispatch<Commen
       type: CommentActionTypes.COMMENTS_LOADING,
     });
 
-    const data = await axios({
-      method: 'get',
-      url: `${baseUrlforBook}${bookId}${getCommentsLink}`,
-    });
-    console.log(data.data);
+    const data = await getCommentsRequest(bookId);
     dispatch({
       type: CommentActionTypes.COMMENTS_SUCCESS,
       payload: {
@@ -50,16 +44,12 @@ export const addComments = (
     };
 
     const token = localStorage.getItem('token');
-
-    await axios({
-      method: 'post',
-      url: `${baseUrlforBook}${bookId}${createCommentLink}`,
-      data: body,
-      headers: { Authorization: `Bearer ${token}` },
-    });
+    await createCommentRequest(body, bookId, token);
     loadComments(bookId)(dispatch);
-  } catch (e) {
-    console.log(e);
+  } catch (e: any) {
+    if (e.response.status === 403) {
+      localStorage.removeItem('token');
+    }
   }
 };
 

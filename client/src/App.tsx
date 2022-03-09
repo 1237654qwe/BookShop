@@ -13,28 +13,75 @@ import Navbar from './components/Navbar';
 import Footer from './components/Footer';
 import RequireAuth from './api/RequireAuth';
 
+import { FooterStyle } from './style/Styled';
+
+const routes = [
+  {
+    path: '/',
+    Component: Home,
+    isAuth: false,
+  },
+  {
+    path: '/sign-in',
+    Component: SignIn,
+    isAuth: false,
+  },
+  {
+    path: '/sign-up',
+    Component: SignUp,
+    isAuth: false,
+  },
+  {
+    path: '/user',
+    Component: User,
+    isAuth: true,
+  },
+  {
+    path: '/cart',
+    Component: Cart,
+    isAuth: true,
+  },
+];
+
 const App: React.FC = () => (
-  <>
-    <div className="app">
-      <div className="app-header">
-        <Navbar />
-      </div>
-      <div className='app-content'>
-        <Routes>
-          <Route path="/" element={<Home />}></Route>
-          <Route path="/signIn" element={<SignIn />}></Route>
-          <Route path="/signUp" element={<SignUp />}></Route>
-          <Route element={<RequireAuth />}>
-            <Route path="/user" element={<User />}></Route>
-            <Route path="/cart" element={<Cart />}></Route>
-          </Route>
-        </Routes>
-      </div>
-      <div className="app-footer">
-        <Footer />
-      </div>
-    </div>
-  </>
+  <Routes>
+    {routes.map(({ path, Component, isAuth }) => {
+      if (isAuth) {
+        return <Route element={<RequireAuth />}>
+          <Route key={path}
+            path={path}
+            element={
+              <div className="app">
+                <div className="app-header">
+                  <Navbar />
+                </div>
+                <div className='app-content'>
+                  <Component />
+                </div>
+                <FooterStyle>
+                  <Footer />
+                </FooterStyle>
+              </div>
+            } />;
+        </Route>;
+      }
+      return <Route key={path}
+        path={path}
+        element={
+          <div className="app">
+            <div className="app-header">
+              <Navbar />
+            </div>
+            <div className='app-content'>
+              <Component />
+            </div>
+            <FooterStyle>
+              <Footer />
+            </FooterStyle>
+          </div>
+        } />;
+    })}
+  </Routes>
 );
 
 export default App;

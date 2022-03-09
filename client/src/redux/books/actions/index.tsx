@@ -2,10 +2,12 @@
 /* eslint-disable import/extensions */
 /* eslint-disable import/no-unresolved */
 import { Dispatch } from 'redux';
-import axios from 'axios';
 import {
-  baseUrl, baseUrlforBook, getBooksLink, getBookFiltersLink, getOneBooksLink, updateRatingLink,
-} from '../../../api/links';
+  getBooksRequest,
+  getBookFiltersRequest,
+  getOneBooksRequest,
+  updateRatingRequest,
+} from '../../../api/axios';
 
 import {
   BooksActions,
@@ -24,17 +26,13 @@ export const loadBooks = (
       type: BooksActionTypes.BOOKS_LOADING,
     });
 
-    const data = await axios({
-      method: 'get',
-      url: `${baseUrl}${getBooksLink}`,
-      params: {
-        page,
-        limit,
-        author,
-        genre,
-        price,
-      },
-    });
+    const data = await getBooksRequest(
+      page,
+      limit,
+      author,
+      genre,
+      price,
+    );
 
     dispatch({
       type: BooksActionTypes.BOOKS_SUCCESS,
@@ -54,10 +52,7 @@ export const loadFilters = () => async (dispatch: Dispatch<BooksActions>) => {
       type: BooksActionTypes.BOOKS_FILTERS_LOADING,
     });
 
-    const data = await axios({
-      method: 'get',
-      url: `${baseUrl}${getBookFiltersLink}`,
-    });
+    const data = await getBookFiltersRequest();
 
     dispatch({
       type: BooksActionTypes.BOOKS_FILTERS_SUCCESS,
@@ -77,10 +72,7 @@ export const loadBook = (id: number) => async (dispatch: Dispatch<BooksActions>)
       type: BooksActionTypes.ONE_BOOK_LOADING,
     });
 
-    const data = await axios({
-      method: 'get',
-      url: `${baseUrl}${getOneBooksLink}${id}`,
-    });
+    const data = await getOneBooksRequest(id);
 
     dispatch({
       type: BooksActionTypes.ONE_BOOK_SUCCESS,
@@ -107,13 +99,10 @@ export const addRating = (
 
     const token = localStorage.getItem('token');
 
-    await axios({
-      method: 'post',
-      url: `${baseUrlforBook}${bookId}${updateRatingLink}`,
-      data: body,
-      headers: { Authorization: `Bearer ${token}` },
-    });
-  } catch (e) {
-    console.log(e);
+    updateRatingRequest(body, bookId, token);
+  } catch (e: any) {
+    if (e.response.status === 403) {
+      localStorage.removeItem('token');
+    }
   }
 };

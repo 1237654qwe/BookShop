@@ -1,5 +1,6 @@
+/* eslint-disable import/extensions */
+/* eslint-disable import/no-unresolved */
 import React from 'react';
-import { Link } from 'react-router-dom';
 
 import {
   AppBar,
@@ -16,39 +17,53 @@ import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 import LoginIcon from '@mui/icons-material/Login';
 import FaceIcon from '@mui/icons-material/Face';
 
-const Navbar: React.FC = () => (
+import { Links } from '../style/Styled';
+
+const Navbar: React.FC = () => {
+  const token = localStorage.getItem('token');
+  return (
     <Box sx={{ display: 'flex' }}>
       <CssBaseline />
       <AppBar >
         <Toolbar>
           <Typography
-            variant="h5"
+            variant="h3"
             component="span"
             sx={{ flexGrow: 1 }}
           >
-            <Link to="/" >BookShop</Link>
-          </Typography>
+          <Links to="/" >BookShop</Links>
+        </Typography>
+        {token
+          ? (
           <IconButton
             color="inherit"
           >
-            <Link to="/user" ><FaceIcon /></Link>
-          </IconButton>
+            <Links to="/user" > <FaceIcon fontSize='large' /></Links>
+            </IconButton>
+          ) : (
+            <IconButton
+              color="inherit"
+            >
+              <Links to="/sign-in" > <LoginIcon fontSize='large' /></Links>
+            </IconButton>
+          )
+        }
+        {token
+          ? (
           <IconButton
             color="inherit"
           >
-            <Link to="/signIn" > <LoginIcon /></Link>
+            <Links to="/cart" ><ShoppingCartIcon fontSize='large' /></Links>
           </IconButton>
+          ) : (
           <IconButton
             color="inherit"
           >
-            <Link to="/signUp" ><HowToRegIcon /></Link>
+            <Links to="/sign-up" ><HowToRegIcon fontSize='large' /></Links>
           </IconButton>
-          <IconButton
-            color="inherit"
-          >
-            <Link to="/cart" ><ShoppingCartIcon /></Link>
-          </IconButton>
-        </Toolbar>
+          )
+        }
+      </Toolbar>
       </AppBar>
       <Divider />
       <List>
@@ -63,6 +78,6 @@ const Navbar: React.FC = () => (
         Книга по цене
       </List>
     </ Box>
-);
-
+  );
+};
 export default Navbar;

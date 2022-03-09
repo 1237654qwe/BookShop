@@ -4,6 +4,9 @@ import { Link } from 'react-router-dom';
 export const Container = styled.div`
   display: flex;
   justify-content: space-around;
+  margin-top: 70px;
+  overflow: hidden;
+  min-height: 78.9vh;
 `;
 
 export const Title = styled.div`
@@ -30,7 +33,17 @@ export const Buttons = styled.div`
 display:flex;
 justify-content: space-around;
 margin-top: 20px;
-margin-right: 20px;
+`;
+
+export const UserButtons = styled.div`
+display:flex;
+margin-top: 20px;
+`;
+
+export const UserInfo = styled.div`
+display:flex;
+justify-content: start;
+flex-direction: column;
 `;
 
 export const Text = styled.p`
@@ -39,7 +52,22 @@ export const Text = styled.p`
 `;
 
 export const Links = styled(Link)`
-  text-decoration: none
+  color: White;
+  text-decoration: none;
+  margin: 1rem;
+  position: relative;
+`;
+
+export const SignLinks = styled(Link)`
+  color: Blue;
+  text-decoration: none;
+  margin: 1rem;
+  position: relative;
+`;
+
+export const Icons = styled.div`
+  width: 50px;
+  height: 50px;
 `;
 
 export const Imgs = styled.div`
@@ -58,16 +86,16 @@ export const HomeContainer = styled.div`
 
 export const SignInContainer = styled.div`
   display: flex;
-  flex-direction: column;
-  margin-top: 150px;
-  margin-bottom: 148px;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto;
 `;
 
 export const SignUpContainer = styled.div`
   display: flex;
-  flex-direction: column;
-  margin-top: 50px;
-  margin-bottom: 50px;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto;
 `;
 
 export const HomeContent = styled.div`
@@ -143,4 +171,9 @@ export const CommentsForm = styled.div`
   flex-direction: column;
   align-items: flex-start;
   margin-top: 20px;
+`;
+
+export const FooterStyle = styled.div`
+  margin-top:auto; 
+  width: 100%;
 `;

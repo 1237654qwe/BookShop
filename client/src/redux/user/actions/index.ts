@@ -2,14 +2,12 @@
 /* eslint-disable import/extensions */
 /* eslint-disable import/no-unresolved */
 import { Dispatch } from 'redux';
-import axios from 'axios';
 import {
-  baseUrl,
-  getOneUserLink,
-  updateUserLink,
-  uploadAvatarLink,
-  updateUserPasswordLink,
-} from '../../../api/links';
+  getOneUserRequest,
+  updateUserLinkRequest,
+  uploadAvatarRequest,
+  updateUserPassworRequest,
+} from '../../../api/axios';
 
 import {
   UserActions,
@@ -23,13 +21,7 @@ export const loadUser = () => async (dispatch: Dispatch<UserActions>) => {
     });
 
     const token = localStorage.getItem('token');
-
-    const data = await axios({
-      method: 'get',
-      url: `${baseUrl}${getOneUserLink}`,
-      headers: { Authorization: `Bearer ${token}` },
-    });
-
+    const data = await getOneUserRequest(token);
     dispatch({
       type: UserActionTypes.USER_SUCCESS,
       payload: data.data,
@@ -55,15 +47,11 @@ export const updateUser = (
     };
 
     const token = localStorage.getItem('token');
-
-    await axios({
-      method: 'put',
-      url: `${baseUrl}${updateUserLink}`,
-      data: body,
-      headers: { Authorization: `Bearer ${token}` },
-    });
-  } catch (e) {
-    console.log(e);
+    await updateUserLinkRequest(body, token);
+  } catch (e: any) {
+    if (e.response.status === 403) {
+      localStorage.removeItem('token');
+    }
   }
 };
 
@@ -75,14 +63,11 @@ export const updateUserPass = (password: string) => async () => {
 
     const token = localStorage.getItem('token');
 
-    await axios({
-      method: 'put',
-      url: `${baseUrl}${uploadAvatarLink}`,
-      data: body,
-      headers: { Authorization: `Bearer ${token}` },
-    });
-  } catch (e) {
-    console.log(e);
+    await updateUserPassworRequest(body, token);
+  } catch (e: any) {
+    if (e.response.status === 403) {
+      localStorage.removeItem('token');
+    }
   }
 };
 
@@ -93,14 +78,11 @@ export const updateAvatar = (avatarUrl: any) => async () => {
     const formData = new FormData();
     formData.append('avatar', avatarUrl);
 
-    await axios({
-      method: 'post',
-      url: `${baseUrl} + ${updateUserPasswordLink}`,
-      data: formData,
-      headers: { Authorization: `Bearer ${token}` },
-    });
-  } catch (e) {
-    console.log(e);
+    await uploadAvatarRequest(formData, token);
+  } catch (e: any) {
+    if (e.response.status === 403) {
+      localStorage.removeItem('token');
+    }
   }
 };
 

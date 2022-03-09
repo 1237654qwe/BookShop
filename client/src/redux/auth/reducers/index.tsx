@@ -12,6 +12,8 @@ const initialState: AuthInfo = {
   password: '',
   dob: '',
   name: '',
+  signInError: '',
+  signUpError: '',
 };
 
 const authReducer = (
@@ -23,6 +25,16 @@ const authReducer = (
       return {
         ...state,
         [action.payload.name]: action.payload.value,
+      };
+    case AuthActionTypes.SIGNIN_FAIL:
+      return {
+        ...state,
+        signInError: action.payload,
+      };
+    case AuthActionTypes.SIGNUP_FAIL:
+      return {
+        ...state,
+        signUpError: action.payload,
       };
     default:
       return state;
