@@ -3,7 +3,7 @@
 /* eslint-disable import/extensions */
 /* eslint-disable import/no-unresolved */
 import { Dispatch } from 'react-redux';
-import { getCommentsRequest, createCommentRequest } from '../../../api/axios';
+import { getCommentsRequest, createCommentRequest, userErrorHendler } from '../../../api/axios';
 
 import {
   CommentActions,
@@ -47,13 +47,36 @@ export const addComments = (
     await createCommentRequest(body, bookId, token);
     loadComments(bookId)(dispatch);
   } catch (e: any) {
-    if (e.response.status === 403) {
-      localStorage.removeItem('token');
-    }
+    userErrorHendler(e);
+  }
+};
+
+export const addAnswers = (
+  bookId: number,
+  text: string,
+  parentId: number | null,
+) => async (dispatch: Dispatch<CommentActions>) => {
+  try {
+    const body = {
+      bookId,
+      parentId,
+      text,
+    };
+
+    const token = localStorage.getItem('token');
+    await createCommentRequest(body, bookId, token);
+    loadComments(bookId)(dispatch);
+  } catch (e: any) {
+    userErrorHendler(e);
   }
 };
 
 export const changeCommentInput = (value: string) => ({
   type: CommentActionTypes.CHANGE_COMMENT_INPUT,
+  payload: { value },
+});
+
+export const changeAnswerInput = (value: string) => ({
+  type: CommentActionTypes.CHANGE_ANSWER_INPUT,
   payload: { value },
 });

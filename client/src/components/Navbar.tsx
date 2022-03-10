@@ -13,7 +13,6 @@ import {
   Divider,
 } from '@mui/material';
 import HowToRegIcon from '@mui/icons-material/HowToReg';
-import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 import LoginIcon from '@mui/icons-material/Login';
 import FaceIcon from '@mui/icons-material/Face';
 
@@ -49,13 +48,7 @@ const Navbar: React.FC = () => {
           )
         }
         {token
-          ? (
-          <IconButton
-            color="inherit"
-          >
-            <Links to="/cart" ><ShoppingCartIcon fontSize='large' /></Links>
-          </IconButton>
-          ) : (
+          ? (<></>) : (
           <IconButton
             color="inherit"
           >

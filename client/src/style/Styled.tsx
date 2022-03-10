@@ -35,6 +35,12 @@ justify-content: space-around;
 margin-top: 20px;
 `;
 
+export const FilterButtons = styled.div`
+display:flex;
+justify-content: start;
+margin-top: 20px;
+`;
+
 export const UserButtons = styled.div`
 display:flex;
 margin-top: 20px;
@@ -82,6 +88,8 @@ export const HomeContainer = styled.div`
   flex-direction: column;
   margin-top: 50px;
   margin-bottom: 50px;
+  overflow: hidden;
+  min-height: 78.9vh;
 `;
 
 export const SignInContainer = styled.div`

@@ -11,12 +11,14 @@ export interface ICommentState {
   loading: boolean,
   comments: CommentInfo[],
   comment: string
+  answer: string
 }
 
 const initialState: ICommentState = {
   loading: false,
   comments: [],
   comment: '',
+  answer: '',
 };
 
 const commentsReducer = (
@@ -44,6 +46,11 @@ const commentsReducer = (
       return {
         ...state,
         comment: action.payload.value,
+      };
+    case CommentActionTypes.CHANGE_ANSWER_INPUT:
+      return {
+        ...state,
+        answer: action.payload.value,
       };
     default:
       return state;

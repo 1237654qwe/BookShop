@@ -4,9 +4,10 @@
 import { Dispatch } from 'redux';
 import {
   getOneUserRequest,
-  updateUserLinkRequest,
+  updateUserRequest,
   uploadAvatarRequest,
   updateUserPassworRequest,
+  userErrorHendler,
 } from '../../../api/axios';
 
 import {
@@ -26,11 +27,8 @@ export const loadUser = () => async (dispatch: Dispatch<UserActions>) => {
       type: UserActionTypes.USER_SUCCESS,
       payload: data.data,
     });
-  } catch (e) {
-    dispatch({
-      type: UserActionTypes.USER_FAIL,
-      payload: 'somthing wrong',
-    });
+  } catch (e: any) {
+    userErrorHendler(e);
   }
 };
 
@@ -43,15 +41,13 @@ export const updateUser = (
     const body = {
       name,
       email,
-      dob,
+      dob: dob.substring(0, 10),
     };
 
     const token = localStorage.getItem('token');
-    await updateUserLinkRequest(body, token);
+    await updateUserRequest(body, token);
   } catch (e: any) {
-    if (e.response.status === 403) {
-      localStorage.removeItem('token');
-    }
+    userErrorHendler(e);
   }
 };
 
@@ -65,28 +61,32 @@ export const updateUserPass = (password: string) => async () => {
 
     await updateUserPassworRequest(body, token);
   } catch (e: any) {
-    if (e.response.status === 403) {
-      localStorage.removeItem('token');
-    }
+    userErrorHendler(e);
   }
 };
 
-export const updateAvatar = (avatarUrl: any) => async () => {
+export const updateAvatar = (avatarUrl: any) => async (dispatch: Dispatch<UserActions>) => {
   try {
     const token = localStorage.getItem('token');
 
     const formData = new FormData();
     formData.append('avatar', avatarUrl);
 
-    await uploadAvatarRequest(formData, token);
+    const data = await uploadAvatarRequest(formData, token);
+    dispatch({
+      type: UserActionTypes.UPDATE_AVATAR,
+      payload: data.data,
+    });
   } catch (e: any) {
-    if (e.response.status === 403) {
-      localStorage.removeItem('token');
-    }
+    userErrorHendler(e);
   }
 };
 
 export const changeUserInput = (name: string, value: string) => ({
   type: UserActionTypes.CHANGE_USER_INPUT,
   payload: { name, value },
+});
+
+export const clearUserReducer = () => ({
+  type: UserActionTypes.СLEAR_USER_REDUCER,
 });

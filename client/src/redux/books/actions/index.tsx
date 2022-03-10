@@ -7,6 +7,8 @@ import {
   getBookFiltersRequest,
   getOneBooksRequest,
   updateRatingRequest,
+  getUserRatingRequest,
+  userErrorHendler,
 } from '../../../api/axios';
 
 import {
@@ -46,6 +48,21 @@ export const loadBooks = (
   }
 };
 
+export const getUserRating = (
+  bookId: number,
+) => async (dispatch: Dispatch<BooksActions>) => {
+  try {
+    const data = await getUserRatingRequest(bookId);
+
+    dispatch({
+      type: BooksActionTypes.GET_USER_RATING,
+      payload: data?.data?.rating || 0,
+    });
+  } catch (e: any) {
+    userErrorHendler(e);
+  }
+};
+
 export const loadFilters = () => async (dispatch: Dispatch<BooksActions>) => {
   try {
     dispatch({
@@ -80,6 +97,10 @@ export const loadBook = (id: number) => async (dispatch: Dispatch<BooksActions>)
         book: data.data,
       },
     });
+    const token = localStorage.getItem('token');
+    if (token) {
+      await getUserRating(id)(dispatch);
+    }
   } catch (e) {
     dispatch({
       type: BooksActionTypes.ONE_BOOK_FAILED,
@@ -101,8 +122,6 @@ export const addRating = (
 
     updateRatingRequest(body, bookId, token);
   } catch (e: any) {
-    if (e.response.status === 403) {
-      localStorage.removeItem('token');
-    }
+    userErrorHendler(e);
   }
 };

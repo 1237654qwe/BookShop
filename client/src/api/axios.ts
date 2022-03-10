@@ -1,4 +1,8 @@
+/* eslint-disable import/extensions */
+/* eslint-disable import/no-unresolved */
 import axios from 'axios';
+
+import history from '../history';
 
 export const baseUrl = 'http://localhost:3001/api';
 export const baseUrlforBook = 'http://localhost:3001/api/book/';
@@ -12,6 +16,7 @@ export const getOneBooksLink = '/book/';
 export const getCommentsLink = '/comments';
 export const createCommentLink = '/new-comment';
 export const updateRatingLink = '/update-rating';
+export const getUserRatingLink = '/user-rating';
 
 export const getOneUserLink = '/user';
 export const updateUserLink = '/user';
@@ -125,7 +130,7 @@ export const getOneUserRequest = async (token: string | null) => {
   return data;
 };
 
-export const updateUserLinkRequest = async (
+export const updateUserRequest = async (
   body: {
     name: string,
     email: string,
@@ -159,10 +164,28 @@ export const uploadAvatarRequest = async (
   formData: any,
   token: string | null,
 ) => {
-  await axios({
+  const data = await axios({
     method: 'post',
     url: `${baseUrl}${uploadAvatarLink}`,
     data: formData,
     headers: { Authorization: `Bearer ${token}` },
   });
+  return data;
+};
+
+export const getUserRatingRequest = async (bookId: number) => {
+  const token = localStorage.getItem('token');
+  const data = await axios({
+    method: 'get',
+    url: `${baseUrlforBook}${bookId}${getUserRatingLink}`,
+    headers: { Authorization: `Bearer ${token}` },
+  });
+  return data;
+};
+
+export const userErrorHendler = async (e: any) => {
+  if (e.response.status === 403) {
+    localStorage.removeItem('token');
+    history.push('/sign-in');
+  }
 };

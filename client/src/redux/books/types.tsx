@@ -9,6 +9,7 @@ export type BooksInfo = {
   price: number,
   rating: number,
   coverUrl: string,
+  userRating: number,
 };
 
 export type BooksPayload = {
@@ -35,7 +36,9 @@ export enum BooksActionTypes {
   ONE_BOOK_LOADING = 'ONE_BOOK_LOADING',
   ONE_BOOK_FAILED = 'ONE_BOOK_FAILED',
   ONE_BOOK_SUCCESS = 'ONE_BOOK_SUCCESS',
+  GET_USER_RATING = 'GET_USER_RATING',
   COMMENT_INPUT = 'COMMENT_INPUT'
+  // ворой коммент для ответов на коменты
 }
 
 interface IBooksLoading {
@@ -75,6 +78,11 @@ interface IOneBookFailed {
   payload: string
 }
 
+interface IGetUserReting {
+  type: BooksActionTypes.GET_USER_RATING,
+  payload: number
+}
+
 interface IOneBookSuccess {
   type: BooksActionTypes.ONE_BOOK_SUCCESS,
   payload: OneBookPayload
@@ -89,4 +97,5 @@ export type BooksActions =
   IBooksFiltersSuccess |
   IOneBookLoading |
   IOneBookFailed |
+  IGetUserReting |
   IOneBookSuccess

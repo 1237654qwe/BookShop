@@ -33,7 +33,7 @@ const ModalWindow: React.FC<Props> = ({
   ratingBook,
 }) => {
   const [tab, setTab] = React.useState('1');
-  const [rating, setRating] = React.useState<number | null>(0);
+  const [rating, setRating] = React.useState<number | null>(null);
 
   const handleTabListChange = (event: React.SyntheticEvent, newValue: string) => {
     setTab(newValue);
@@ -66,20 +66,21 @@ const ModalWindow: React.FC<Props> = ({
                 <TabPanel value="1">
                   <Typography variant="body2" color="text">
                     <Typography id="modal-modal-title" variant="h6" component="h2">
-                      {book.title}
+                      <p>{book.title}</p>
                     </Typography>
                     <p>{book.author},</p>
-                    <p>{book.genre}</p>
+                    <p>{book.genre}.</p>
                   </Typography>
                 </TabPanel>
                 <TabPanel value="2">
                   <Typography variant="body2" color="text">
-                    {book.description}
+                    <p>{book.description}.</p>
+                    <p>Стоймость: {book.price} руб.</p>
                   </Typography>
                   <Typography component="legend">Поставте оценку книге</Typography>
                   <Rating
                     name="simple-controlled"
-                    value={rating}
+                    value={rating || book.userRating}
                     onChange={(event, newValue) => {
                       setRating(newValue);
                       ratingBook(book.id, newValue);

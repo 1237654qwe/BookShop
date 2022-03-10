@@ -23,7 +23,9 @@ export enum CommentActionTypes {
   COMMENTS_FAILED = 'COMMENTS_FAILED',
   COMMENTS_SUCCESS = 'COMMENTS_SUCCESS',
   ADD_COMMENT = 'ADD_COMMENT',
+  ADD_ANSWER = 'ADD_ANSWER',
   CHANGE_COMMENT_INPUT = 'CHANGE_COMMENT_INPUT',
+  CHANGE_ANSWER_INPUT = 'CHANGE_ANSWER_INPUT',
 }
 
 interface ICommentsLoading {
@@ -49,9 +51,20 @@ interface IChangeCommentInput {
   payload: {value: string}
 }
 
+interface IAddAnswer {
+  type: CommentActionTypes.ADD_ANSWER,
+}
+
+interface IChangeAnswerInput {
+  type: CommentActionTypes.CHANGE_ANSWER_INPUT,
+  payload: {value: string}
+}
+
 export type CommentActions =
 ICommentsLoading |
 ICommentsFailed |
 ICommentsSuccess |
 IAddComment|
-IChangeCommentInput;
+IChangeCommentInput |
+IAddAnswer |
+IChangeAnswerInput;

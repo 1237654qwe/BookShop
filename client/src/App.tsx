@@ -2,13 +2,13 @@
 /* eslint-disable import/no-unresolved */
 import React from 'react';
 import { Routes, Route } from 'react-router-dom';
+
 import './App.css';
 
 import Home from './layouts/Home';
 import SignIn from './layouts/SignIn';
 import SignUp from './layouts/SignUp';
 import User from './layouts/User';
-import Cart from './layouts/Cart';
 import Navbar from './components/Navbar';
 import Footer from './components/Footer';
 import RequireAuth from './api/RequireAuth';
@@ -36,18 +36,13 @@ const routes = [
     Component: User,
     isAuth: true,
   },
-  {
-    path: '/cart',
-    Component: Cart,
-    isAuth: true,
-  },
 ];
 
 const App: React.FC = () => (
-  <Routes>
-    {routes.map(({ path, Component, isAuth }) => {
-      if (isAuth) {
-        return <Route element={<RequireAuth />}>
+    <Routes>
+      {routes.map(({ path, Component, isAuth }) => {
+        if (isAuth) {
+          return <Route element={<RequireAuth />}>
           <Route key={path}
             path={path}
             element={
@@ -64,8 +59,8 @@ const App: React.FC = () => (
               </div>
             } />;
         </Route>;
-      }
-      return <Route key={path}
+        }
+        return <Route key={path}
         path={path}
         element={
           <div className="app">
@@ -80,8 +75,8 @@ const App: React.FC = () => (
             </FooterStyle>
           </div>
         } />;
-    })}
-  </Routes>
+      })}
+    </Routes>
 );
 
 export default App;

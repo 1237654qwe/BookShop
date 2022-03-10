@@ -50,6 +50,18 @@ const userReducer = (state: IUserState = initialState, action: UserActions): IUs
           [action.payload.name]: action.payload.value,
         },
       };
+    case UserActionTypes.СLEAR_USER_REDUCER:
+      return {
+        ...initialState,
+      };
+    case UserActionTypes.UPDATE_AVATAR:
+      return {
+        ...state,
+        user: {
+          ...state.user,
+          avatarUrl: action.payload,
+        },
+      };
     default:
       return state;
   }

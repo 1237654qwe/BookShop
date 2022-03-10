@@ -75,7 +75,7 @@ const SignIn: React.FC<Props> = ({
       <SignInContainer>
         <form onSubmit={handleSubmit(onSubmitHandler)}>
           <Title>
-            <Typography variant="h6">Create new account</Typography>
+            <Typography variant="h6">Войти в аккаунт</Typography>
           </Title>
           <Inputs>
             <TextField
@@ -95,7 +95,7 @@ const SignIn: React.FC<Props> = ({
               {...register('password')}
               name="password"
               type="password"
-              label="Password"
+              label="Пароль"
               variant="filled"
               value={password}
               onChange={(e: { target: { name: string; value: string; }; }) => {
@@ -109,13 +109,13 @@ const SignIn: React.FC<Props> = ({
               type="submit"
               onClick={onClickLogin}
             >
-              Login
+              Войти
             </Button>
             <Button
               color="inherit"
               type="submit"
             >
-              <SignLinks to="/sign-up" color="primary"> Create an account</SignLinks>
+              <SignLinks to="/sign-up" color="primary">Создать новый аккаунт</SignLinks>
             </Button>
           </Buttons>
         </form>

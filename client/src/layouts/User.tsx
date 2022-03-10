@@ -1,3 +1,4 @@
+/* eslint-disable quotes */
 /* eslint-disable no-use-before-define */
 /* eslint-disable import/extensions */
 /* eslint-disable import/no-unresolved */
@@ -26,6 +27,7 @@ import {
   updateUser,
   updateAvatar,
   updateUserPass,
+  clearUserReducer,
 } from '../redux/user/actions';
 
 const User: React.FC<Props> = ({
@@ -39,6 +41,7 @@ const User: React.FC<Props> = ({
   userUpdate,
   avatarUpdate,
   userPassUpdate,
+  clearUserState,
 }) => {
   const [edit, setEdit] = useState(false);
   const [newPassword, setNewPassword] = useState(false);
@@ -46,7 +49,10 @@ const User: React.FC<Props> = ({
 
   useEffect(() => {
     userLoad();
-  }, [userLoad]);
+    return () => {
+      clearUserState();
+    };
+  }, []);
 
   const editPhoto = (e: any) => {
     const avatar = e.target.files[0];
@@ -165,12 +171,21 @@ const User: React.FC<Props> = ({
       ) : (
         <Container>
           <Imgs>
+          {avatarUrl === null ? (
+            <img
+            src={`https://www.kindpng.com/picc/m/99-997900_headshot-silhouette-person-placeholder-hd-png-download.png`}
+            width='400px'
+            height='400px'
+            alt='нет фото'>
+          </img>
+          ) : (
             <img
               src={`http://localhost:3001/static/${avatarUrl}`}
               width='400px'
               height='400px'
               alt='нет фото'>
             </img>
+          )}
 
             <Button
               variant="contained"
@@ -192,7 +207,7 @@ const User: React.FC<Props> = ({
           <UserInfo>
             <p>Имя: {name}</p>
             <p>Email: {email}</p>
-            <p>Дата рождения: {dob.substr(0, 10)}</p>
+            <p>Дата рождения: {dob.substring(0, 10)}</p>
             <UserButtons>
               <Button
                 variant="contained"
@@ -253,6 +268,7 @@ const mapDispatchToProps = {
   userUpdate: updateUser,
   avatarUpdate: updateAvatar,
   userPassUpdate: updateUserPass,
+  clearUserState: clearUserReducer,
 };
 
 type StateProps = ReturnType<typeof mapStateToProps>;

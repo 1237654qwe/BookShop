@@ -2,18 +2,20 @@
 /* eslint-disable import/no-unresolved */
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { BrowserRouter } from 'react-router-dom';
+// import { BrowserRouter } from 'react-router-dom';
 import { Provider } from 'react-redux';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 import configureStore from './redux/store';
+import CustomRouter from './customBrowserRouter';
+import history from './history';
 
 configureStore({}).then((store) => {
   ReactDOM.render(
     <Provider store={store}>
-      <BrowserRouter>
+      <CustomRouter history={history}>
         <App />
-      </BrowserRouter>
+      </CustomRouter>
     </Provider>,
     document.getElementById('root'),
   );

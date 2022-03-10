@@ -38,6 +38,7 @@ const initialState: IBooksState = {
     price: 0,
     rating: 0,
     coverUrl: '',
+    userRating: 0,
   },
   count: 0,
   page: 1,
@@ -97,6 +98,14 @@ const booksReducer = (state: IBooksState = initialState, action: BooksActions): 
         ...state,
         loading: false,
         book: action.payload.book,
+      };
+    case BooksActionTypes.GET_USER_RATING:
+      return {
+        ...state,
+        book: {
+          ...state.book,
+          userRating: action.payload,
+        },
       };
     default:
       return state;

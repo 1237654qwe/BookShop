@@ -84,21 +84,20 @@ const SignUp: React.FC<Props> = ({
       <SignUpContainer>
         <form onSubmit={handleSubmit(onSubmitHandler)}>
           <Title>
-            <Typography variant="h6">Create new account</Typography>
+            <Typography variant="h6">Создать новый аккаунт</Typography>
           </Title>
           <Inputs>
             <TextField
               {...register('name')}
               name="name"
               type="text"
-              label="Name"
+              label="Имя пользователя"
               variant="filled"
               value={name}
               onChange={(e) => {
                 inputChange(e.target.name, e.target.value);
               }}
             />
-            {signUpError ? (<Text><p>{signUpError}</p></Text>) : (<></>)}
           </Inputs>
           <Inputs>
             <TextField
@@ -111,28 +110,26 @@ const SignUp: React.FC<Props> = ({
                 inputChange(e.target.name, e.target.value);
               }}
             />
-            {signUpError ? (<Text><p>{signUpError}</p></Text>) : (<></>)}
           </Inputs>
           <Inputs>
             <TextField
               {...register('password')}
               name="password"
               type="password"
-              label="Password"
+              label="Пароль"
               variant="filled"
               value={password}
               onChange={(e) => {
                 inputChange(e.target.name, e.target.value);
               }}
             />
-            {signUpError ? (<Text><p>{signUpError}</p></Text>) : (<></>)}
           </Inputs>
           <Inputs>
             <TextField
               {...register('dob')}
               name="dob"
               type="text"
-              label="Day of Birthday"
+              label="Дата рождения"
               variant="filled"
               value={dob}
               onChange={(e) => {
@@ -146,13 +143,13 @@ const SignUp: React.FC<Props> = ({
               type="submit"
               onClick={onClickRegistrate}
             >
-              Registration
+              Зарегистрироваться
             </Button>
             <Button
               color="inherit"
               type="submit"
             >
-              <SignLinks to="/sign-in">Already have an account?</SignLinks>
+              <SignLinks to="/sign-in">Уже есть аккаунт?</SignLinks>
             </Button>
           </Buttons>
         </form>

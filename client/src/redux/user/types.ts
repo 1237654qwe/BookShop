@@ -16,7 +16,8 @@ export enum UserActionTypes {
   USER_LOADING = 'USER_LOADING',
   USER_FAIL = 'USER_FAIL',
   USER_SUCCESS = 'USER_SUCCESS',
-  CHANGE_USER_INPUT = 'CHANGE_USER_INPUT'
+  CHANGE_USER_INPUT = 'CHANGE_USER_INPUT',
+  СLEAR_USER_REDUCER = 'СLEAR_USER_REDUCER',
 }
 
 interface IUpdateUser {
@@ -29,6 +30,7 @@ interface IUpdateUserPass {
 
 interface IUpdateAvatar {
   type: UserActionTypes.UPDATE_AVATAR
+  payload: string
 }
 
 interface IUserLoading {
@@ -50,6 +52,10 @@ interface IChangeUserInput {
   payload: { name: string, value: string }
 }
 
+interface IClearUserReducer {
+  type: UserActionTypes.СLEAR_USER_REDUCER
+}
+
 export type UserActions =
   IUpdateUser |
   IUpdateUserPass |
@@ -57,4 +63,5 @@ export type UserActions =
   IUserLoading |
   IUserFail |
   IUserSuccess |
-  IChangeUserInput
+  IChangeUserInput |
+  IClearUserReducer

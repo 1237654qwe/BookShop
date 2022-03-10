@@ -21,6 +21,8 @@ import {
   loadComments,
   changeCommentInput,
   addComments,
+  changeAnswerInput,
+  addAnswers,
 } from '../redux/comments/actions';
 import { AppStateType } from '../redux/store';
 import { Comments, CommentsForm, ChildComments } from '../style/Styled';
@@ -28,19 +30,29 @@ import { Comments, CommentsForm, ChildComments } from '../style/Styled';
 const CommentForm: React.FC<Props> = ({
   comments,
   comment,
+  answer,
   book,
   commentsLoad,
   commentInputChange,
   commentAdd,
+  answerInputChange,
+  answersAdd,
 }) => {
   const [parentId, setParentId] = useState<number | null>(null);
   useEffect(() => {
     commentsLoad(book.id);
   }, [book]);
 
-  const onSubmit = (e: any) => {
+  const onSubmitComment = (e: any) => {
     commentAdd(book.id, comment, parentId);
     commentInputChange('');
+    setParentId(null);
+    e.preventDefault();
+  };
+
+  const onSubmitAnswer = (e: any) => {
+    answersAdd(book.id, answer, parentId);
+    answerInputChange('');
     setParentId(null);
     e.preventDefault();
   };
@@ -64,16 +76,16 @@ const CommentForm: React.FC<Props> = ({
                         </Typography>
                         <p>{item.text}</p>
                         {parentId === item.id
-                          ? <form onSubmit={onSubmit}>
+                          ? <form onSubmit={onSubmitAnswer}>
                             <CommentsForm>
                               <TextField
                                 label="Прокомментируйте"
                                 sx={{ width: '450px' }}
                                 multiline
                                 rows={2}
-                                value={comment}
+                                value={answer}
                                 onChange={(e: { target: { value: string } }) => {
-                                  commentInputChange(e.target.value);
+                                  answerInputChange(e.target.value);
                                 }}
                               />
                               <Button size="small" color="primary" type="submit">
@@ -110,7 +122,7 @@ const CommentForm: React.FC<Props> = ({
           </Table>
         </TableContainer>
       </Paper>
-        <form onSubmit={onSubmit}>
+        <form onSubmit={onSubmitComment}>
         <CommentsForm>
           <TextField
             label="Прокомментируйте"
@@ -136,6 +148,7 @@ const mapStateToProps = (state: AppStateType) => {
     commentsReducer: {
       comments,
       comment,
+      answer,
     },
     booksReducer: {
       book,
@@ -144,6 +157,7 @@ const mapStateToProps = (state: AppStateType) => {
   return {
     comments,
     comment,
+    answer,
     book,
   };
 };
@@ -152,6 +166,8 @@ const mapDispatchToProps = {
   commentsLoad: loadComments,
   commentInputChange: changeCommentInput,
   commentAdd: addComments,
+  answerInputChange: changeAnswerInput,
+  answersAdd: addAnswers,
 };
 
 type StateProps = ReturnType<typeof mapStateToProps>;
