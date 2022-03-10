@@ -74,7 +74,7 @@ class UserController {
     try {
       const { file } = req;
 
-      const user = await User.update(
+      await User.update(
         {
           avatarUrl: file.filename,
         },
@@ -85,7 +85,12 @@ class UserController {
         },
       );
 
-      res.json(user.avatarUrl);
+      const updateAvatarUser = await User.findOne({
+        where: {
+          id: req.user.id,
+        },
+      });
+      res.json(updateAvatarUser.avatarUrl);
     } catch (e) {
       res.status(500).json(e);
     }

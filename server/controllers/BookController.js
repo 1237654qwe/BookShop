@@ -189,6 +189,20 @@ class BookController {
       res.status(500).json(e);
     }
   }
+
+  static async getUserRaiting(req, res) {
+    try {
+      const rating = await Rating.findOne({
+        where: {
+          bookId: req.params.id,
+          userId: req.user.id,
+        },
+      });
+      res.json(rating);
+    } catch (e) {
+      res.status(500).json(e);
+    }
+  }
 }
 
 module.exports = {

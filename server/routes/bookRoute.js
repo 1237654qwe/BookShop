@@ -10,6 +10,7 @@ const bookRoute = (router) => {
   router.get('/book/:id/comments', (req, res) => BookController.getComments(req, res));
   router.post('/book/:id/new-comment', authMiddleware, (req, res) => BookController.createComment(req, res));
   router.post('/book/:id/update-rating', authMiddleware, (req, res) => BookController.updateRating(req, res));
+  router.get('/book/:id/user-rating', authMiddleware, (req, res) => BookController.getUserRaiting(req, res));
 };
 
 module.exports = {

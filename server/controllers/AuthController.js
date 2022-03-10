@@ -10,7 +10,7 @@ class AuthController {
 
       if (candidate) {
         res.status(409).json({
-          message: 'This email is exist.',
+          message: 'Этот email уже существует',
         });
       } else {
         const salt = bcrypt.genSaltSync(10);
@@ -49,12 +49,12 @@ class AuthController {
           res.json({ token });
         } else {
           res.status(401).json({
-            message: 'Passwords do not match',
+            message: 'Неверный пароль',
           });
         }
       } else {
         res.status(404).json({
-          message: 'User not found',
+          message: 'Пользователь не найден',
         });
       }
     } catch (e) {
