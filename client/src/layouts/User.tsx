@@ -83,13 +83,13 @@ const User: React.FC<Props> = ({
         <Container>
           <form >
             <Title>
-              <Typography variant="h6">Edit your account</Typography>
+              <Typography variant="h6">Изменить данные аккаунта</Typography>
             </Title>
             <UserInputs>
               <TextField
                 name="name"
                 type="text"
-                label="Name"
+                label="Имя пользователя"
                 variant="filled"
                 value={name}
                 onChange={(e: { target: { name: string; value: string; }; }) => {
@@ -112,7 +112,7 @@ const User: React.FC<Props> = ({
               <TextField
                 name="dob"
                 type="text"
-                label="Day of Birthday"
+                label="Дата рождения"
                 variant="filled"
                 value={dob.substr(0, 10)}
                 onChange={(e: { target: { name: string; value: string; }; }) => {
@@ -125,7 +125,7 @@ const User: React.FC<Props> = ({
                 <TextField
                   name="password"
                   type="password"
-                  label="Password"
+                  label="Пароль"
                   variant="filled"
                   onChange={(e: { target: { name: string; value: string; }; }) => {
                     inputUserChange(e.target.name, e.target.value);
