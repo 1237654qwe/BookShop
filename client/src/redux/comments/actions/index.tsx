@@ -3,7 +3,8 @@
 /* eslint-disable import/extensions */
 /* eslint-disable import/no-unresolved */
 import { Dispatch } from 'react-redux';
-import { getCommentsRequest, createCommentRequest, userErrorHendler } from '../../../api/axios';
+import { getCommentsRequest, createCommentRequest } from '../../../api/books';
+import { userErrorHendler } from '../../../api/user';
 
 import {
   CommentActions,
@@ -43,8 +44,7 @@ export const addComments = (
       text,
     };
 
-    const token = localStorage.getItem('token');
-    await createCommentRequest(body, bookId, token);
+    await createCommentRequest(body, bookId);
     loadComments(bookId)(dispatch);
   } catch (e: any) {
     userErrorHendler(e);
@@ -63,8 +63,7 @@ export const addAnswers = (
       text,
     };
 
-    const token = localStorage.getItem('token');
-    await createCommentRequest(body, bookId, token);
+    await createCommentRequest(body, bookId);
     loadComments(bookId)(dispatch);
   } catch (e: any) {
     userErrorHendler(e);

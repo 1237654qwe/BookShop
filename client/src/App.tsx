@@ -39,10 +39,10 @@ const routes = [
 ];
 
 const App: React.FC = () => (
-    <Routes>
-      {routes.map(({ path, Component, isAuth }) => {
-        if (isAuth) {
-          return <Route element={<RequireAuth />}>
+  <Routes>
+    {routes.map(({ path, Component, isAuth }) => {
+      if (isAuth) {
+        return <Route element={<RequireAuth />}>
           <Route key={path}
             path={path}
             element={
@@ -59,8 +59,8 @@ const App: React.FC = () => (
               </div>
             } />;
         </Route>;
-        }
-        return <Route key={path}
+      }
+      return <Route key={path}
         path={path}
         element={
           <div className="app">
@@ -75,8 +75,8 @@ const App: React.FC = () => (
             </FooterStyle>
           </div>
         } />;
-      })}
-    </Routes>
+    })}
+  </Routes>
 );
 
 export default App;

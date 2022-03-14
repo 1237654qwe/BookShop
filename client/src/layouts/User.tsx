@@ -31,6 +31,7 @@ import {
 } from '../redux/user/actions';
 
 const User: React.FC<Props> = ({
+  id,
   name,
   email,
   password,
@@ -48,7 +49,7 @@ const User: React.FC<Props> = ({
   const navigate = useNavigate();
 
   useEffect(() => {
-    userLoad();
+    userLoad(id);
     return () => {
       clearUserState();
     };
@@ -56,7 +57,7 @@ const User: React.FC<Props> = ({
 
   const editPhoto = (e: any) => {
     const avatar = e.target.files[0];
-    avatarUpdate(avatar);
+    avatarUpdate(avatar, id);
   };
 
   const editPasswordHandler = () => {
@@ -64,7 +65,7 @@ const User: React.FC<Props> = ({
   };
 
   const saveEditPasswordHandler = () => {
-    userPassUpdate(password);
+    userPassUpdate(password, id);
     setNewPassword(!newPassword);
   };
 
@@ -73,7 +74,7 @@ const User: React.FC<Props> = ({
   };
 
   const saveEditHandler = () => {
-    userUpdate(name, email, dob);
+    userUpdate(name, email, dob, id);
     setEdit(!edit);
   };
 
@@ -171,21 +172,21 @@ const User: React.FC<Props> = ({
       ) : (
         <Container>
           <Imgs>
-          {avatarUrl === null ? (
-            <img
-            src={`https://www.kindpng.com/picc/m/99-997900_headshot-silhouette-person-placeholder-hd-png-download.png`}
-            width='400px'
-            height='400px'
-            alt='нет фото'>
-          </img>
-          ) : (
-            <img
-              src={`http://localhost:3001/static/${avatarUrl}`}
-              width='400px'
-              height='400px'
-              alt='нет фото'>
-            </img>
-          )}
+            {avatarUrl === null ? (
+              <img
+                src={`https://www.kindpng.com/picc/m/99-997900_headshot-silhouette-person-placeholder-hd-png-download.png`}
+                width='400px'
+                height='400px'
+                alt='нет фото'>
+              </img>
+            ) : (
+              <img
+                src={`http://localhost:3001/static/${avatarUrl}`}
+                width='400px'
+                height='400px'
+                alt='нет фото'>
+              </img>
+            )}
 
             <Button
               variant="contained"
@@ -245,6 +246,7 @@ const mapStateToProps = (state: AppStateType) => {
   const {
     userReducer: {
       user: {
+        id,
         name,
         email,
         password,
@@ -254,6 +256,7 @@ const mapStateToProps = (state: AppStateType) => {
     },
   } = state;
   return {
+    id,
     name,
     email,
     password,

@@ -3,7 +3,7 @@
 /* eslint-disable import/no-unresolved */
 import React, { useEffect } from 'react';
 import { connect } from 'react-redux';
-import { useNavigate, useSearchParams } from 'react-router-dom';
+import { useNavigate, useSearchParams, useLocation } from 'react-router-dom';
 
 import {
   Card,
@@ -56,10 +56,10 @@ const Home: React.FC<Props> = ({
   bookLoad,
 }) => {
   const [searchParams, setSearchParams] = useSearchParams();
-  const [selectedPage, setSelectedPage] = React.useState<number>(searchParams.get('page') ? Number(searchParams.get('page')) : page);
-  const [author, setAuthor] = React.useState<string>(searchParams.get('author') || '');
-  const [genre, setGenre] = React.useState<string[]>(searchParams.get('genre') ? JSON.parse(searchParams.get('genre') as string) : []);
-  const [price, setPrice] = React.useState<string[]>(searchParams.get('price') ? JSON.parse(searchParams.get('price') as string) : ['0', '5000']);
+  const [selectedPage, setSelectedPage] = React.useState<number>(page);
+  const [author, setAuthor] = React.useState<string>('');
+  const [genre, setGenre] = React.useState<string[]>([]);
+  const [price, setPrice] = React.useState<string[]>(['0', '5000']);
   const [openModal, setOpenModal] = React.useState(false);
   const [anchorElAuthor, setAnchorElAuthor] = React.useState<null | HTMLElement>(null);
   const [anchorElGenre, setAnchorElGenre] = React.useState<null | HTMLElement>(null);
@@ -69,7 +69,9 @@ const Home: React.FC<Props> = ({
   const openPrice = Boolean(anchorElPrice);
 
   const countPage = Math.ceil(count / limit);
+
   const navigate = useNavigate();
+  const location = useLocation();
 
   const handleClickAuthor = (event: React.MouseEvent<HTMLButtonElement>) => {
     setAnchorElAuthor(event.currentTarget);
@@ -99,6 +101,13 @@ const Home: React.FC<Props> = ({
   useEffect(() => {
     filtersLoad();
   }, []);
+
+  useEffect(() => {
+    setSelectedPage(searchParams.get('page') ? Number(searchParams.get('page')) : page);
+    setAuthor(searchParams.get('author') || '');
+    setGenre(searchParams.get('genre') ? JSON.parse(searchParams.get('genre') as string) : []);
+    setPrice(searchParams.get('price') ? JSON.parse(searchParams.get('price') as string) : ['0', '5000']);
+  }, [location.search]);
 
   useEffect(() => {
     const timer = setTimeout(() => {
@@ -161,14 +170,14 @@ const Home: React.FC<Props> = ({
         <HomeFilter>
           <FilterButtons>
             <Button
-            id="basic-button"
-            aria-controls={openAuthor ? 'basic-menu' : undefined}
-            aria-haspopup="true"
-            aria-expanded={openAuthor ? 'true' : undefined}
-            onClick={handleClickAuthor}
-          >
-            <Typography>Автор</Typography>
-          </Button>
+              id="basic-button"
+              aria-controls={openAuthor ? 'basic-menu' : undefined}
+              aria-haspopup="true"
+              aria-expanded={openAuthor ? 'true' : undefined}
+              onClick={handleClickAuthor}
+            >
+              <Typography>Автор</Typography>
+            </Button>
           </FilterButtons>
           <Menu
             id="basic-menu"
@@ -180,7 +189,7 @@ const Home: React.FC<Props> = ({
             }}
           >
             {filters.author.map((item) => (
-              <MenuItem>
+              <MenuItem >
                 <Checkbox
                   name="author"
                   value={item}
@@ -192,14 +201,14 @@ const Home: React.FC<Props> = ({
           </Menu>
           <FilterButtons>
             <Button
-            id="basic-button"
-            aria-controls={openGenre ? 'basic-menu' : undefined}
-            aria-haspopup="true"
-            aria-expanded={openGenre ? 'true' : undefined}
-            onClick={handleClickGenre}
-          >
-            <Typography>Жанр</Typography>
-          </Button>
+              id="basic-button"
+              aria-controls={openGenre ? 'basic-menu' : undefined}
+              aria-haspopup="true"
+              aria-expanded={openGenre ? 'true' : undefined}
+              onClick={handleClickGenre}
+            >
+              <Typography>Жанр</Typography>
+            </Button>
           </FilterButtons>
           <Menu
             id="basic-menu"
@@ -211,13 +220,13 @@ const Home: React.FC<Props> = ({
             }}
           >
             {filters.genre.map((item) => (
-              <MenuItem>
+              <MenuItem >
                 <Checkbox
                   name="gener"
                   value={item}
                   onChange={handleChangeGenre}
                   checked={genre.includes(item)}
-                  />
+                />
                 <label>{item}</label>
               </MenuItem>
             ))}
@@ -227,14 +236,14 @@ const Home: React.FC<Props> = ({
           </Menu>
           <FilterButtons>
             <Button
-            id="basic-button"
-            aria-controls={openPrice ? 'basic-menu' : undefined}
-            aria-haspopup="true"
-            aria-expanded={openPrice ? 'true' : undefined}
-            onClick={handleClickPrice}
-          >
-            <Typography>Цена</Typography>
-          </Button>
+              id="basic-button"
+              aria-controls={openPrice ? 'basic-menu' : undefined}
+              aria-haspopup="true"
+              aria-expanded={openPrice ? 'true' : undefined}
+              onClick={handleClickPrice}
+            >
+              <Typography>Цена</Typography>
+            </Button>
           </FilterButtons>
           <Menu
             id="basic-menu"
@@ -267,12 +276,21 @@ const Home: React.FC<Props> = ({
                 <CardActionArea onClick={() => {
                   handleOpenModal(item.id);
                 }}>
-                  <CardMedia
-                    component="img"
-                    height="400"
-                    image={`http://localhost:3001/static/${item.coverUrl}`}
-                    alt="green iguana"
-                  />
+                  {item.coverUrl === null ? (
+                    <CardMedia
+                      component="img"
+                      height="400"
+                      image={'https://orthospecialtyclinic.com/wp-content/uploads/2018/08/book-cover-placeholder.jpg'}
+                      alt="green iguana"
+                    />
+                  ) : (
+                    <CardMedia
+                      component="img"
+                      height="400"
+                      image={`http://localhost:3001/static/${item.coverUrl}`}
+                      alt="green iguana"
+                    />
+                  )}
                   <CardContent>
                     <Typography gutterBottom variant="h6" component="div">
                       <TitleArea>
@@ -310,7 +328,7 @@ const Home: React.FC<Props> = ({
       </HomeContent>
       <PaginationContainer>
         <Pagination
-          count={countPage}
+          count={countPage || 1}
           page={selectedPage}
           onChange={handleChangePage}
           color="primary"

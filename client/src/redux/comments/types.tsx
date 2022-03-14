@@ -10,7 +10,7 @@ export type CommentInfo = {
     id: number,
     name: number,
   }
-  comments: CommentInfo[],
+  subComments: CommentInfo[],
 };
 
 export type CommentsPayload = {
@@ -48,7 +48,7 @@ interface IAddComment {
 
 interface IChangeCommentInput {
   type: CommentActionTypes.CHANGE_COMMENT_INPUT,
-  payload: {value: string}
+  payload: { value: string }
 }
 
 interface IAddAnswer {
@@ -57,14 +57,14 @@ interface IAddAnswer {
 
 interface IChangeAnswerInput {
   type: CommentActionTypes.CHANGE_ANSWER_INPUT,
-  payload: {value: string}
+  payload: { value: string }
 }
 
 export type CommentActions =
-ICommentsLoading |
-ICommentsFailed |
-ICommentsSuccess |
-IAddComment|
-IChangeCommentInput |
-IAddAnswer |
-IChangeAnswerInput;
+  ICommentsLoading |
+  ICommentsFailed |
+  ICommentsSuccess |
+  IAddComment |
+  IChangeCommentInput |
+  IAddAnswer |
+  IChangeAnswerInput;

@@ -38,7 +38,6 @@ export enum BooksActionTypes {
   ONE_BOOK_SUCCESS = 'ONE_BOOK_SUCCESS',
   GET_USER_RATING = 'GET_USER_RATING',
   COMMENT_INPUT = 'COMMENT_INPUT'
-  // ворой коммент для ответов на коменты
 }
 
 interface IBooksLoading {

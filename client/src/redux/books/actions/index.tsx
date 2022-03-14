@@ -8,8 +8,10 @@ import {
   getOneBooksRequest,
   updateRatingRequest,
   getUserRatingRequest,
+} from '../../../api/books';
+import {
   userErrorHendler,
-} from '../../../api/axios';
+} from '../../../api/user';
 
 import {
   BooksActions,
@@ -118,9 +120,7 @@ export const addRating = (
       rating,
     };
 
-    const token = localStorage.getItem('token');
-
-    updateRatingRequest(body, bookId, token);
+    updateRatingRequest(body, bookId);
   } catch (e: any) {
     userErrorHendler(e);
   }

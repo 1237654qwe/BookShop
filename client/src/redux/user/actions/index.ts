@@ -8,21 +8,20 @@ import {
   uploadAvatarRequest,
   updateUserPassworRequest,
   userErrorHendler,
-} from '../../../api/axios';
+} from '../../../api/user';
 
 import {
   UserActions,
   UserActionTypes,
 } from '../types';
 
-export const loadUser = () => async (dispatch: Dispatch<UserActions>) => {
+export const loadUser = (id: number) => async (dispatch: Dispatch<UserActions>) => {
   try {
     dispatch({
       type: UserActionTypes.USER_LOADING,
     });
 
-    const token = localStorage.getItem('token');
-    const data = await getOneUserRequest(token);
+    const data = await getOneUserRequest(id);
     dispatch({
       type: UserActionTypes.USER_SUCCESS,
       payload: data.data,
@@ -36,6 +35,7 @@ export const updateUser = (
   name: string,
   email: string,
   dob: string,
+  id: number,
 ) => async () => {
   try {
     const body = {
@@ -44,35 +44,33 @@ export const updateUser = (
       dob: dob.substring(0, 10),
     };
 
-    const token = localStorage.getItem('token');
-    await updateUserRequest(body, token);
+    await updateUserRequest(body, id);
   } catch (e: any) {
     userErrorHendler(e);
   }
 };
 
-export const updateUserPass = (password: string) => async () => {
+export const updateUserPass = (password: string, id: number) => async () => {
   try {
     const body = {
       password,
     };
 
-    const token = localStorage.getItem('token');
-
-    await updateUserPassworRequest(body, token);
+    await updateUserPassworRequest(body, id);
   } catch (e: any) {
     userErrorHendler(e);
   }
 };
 
-export const updateAvatar = (avatarUrl: any) => async (dispatch: Dispatch<UserActions>) => {
+export const updateAvatar = (
+  avatarUrl: any,
+  id: number,
+) => async (dispatch: Dispatch<UserActions>) => {
   try {
-    const token = localStorage.getItem('token');
-
     const formData = new FormData();
     formData.append('avatar', avatarUrl);
 
-    const data = await uploadAvatarRequest(formData, token);
+    const data = await uploadAvatarRequest(formData, id);
     dispatch({
       type: UserActionTypes.UPDATE_AVATAR,
       payload: data.data,

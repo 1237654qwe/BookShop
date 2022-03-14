@@ -67,54 +67,54 @@ const CommentForm: React.FC<Props> = ({
                 {comments.map((item) => (
                   <div>
                     <Comments>
-                    <TableCell
-                      key={item.id}
-                    >
-                      <Typography variant="body2" color="text">
-                        <Typography id="modal-modal-title" variant="h6" component="h6">
-                          {item.user.name}
-                        </Typography>
-                        <p>{item.text}</p>
-                        {parentId === item.id
-                          ? <form onSubmit={onSubmitAnswer}>
-                            <CommentsForm>
-                              <TextField
-                                label="Прокомментируйте"
-                                sx={{ width: '450px' }}
-                                multiline
-                                rows={2}
-                                value={answer}
-                                onChange={(e: { target: { value: string } }) => {
-                                  answerInputChange(e.target.value);
-                                }}
-                              />
-                              <Button size="small" color="primary" type="submit">
-                                Прокомментировать
-                              </Button>
-                            </CommentsForm>
-                          </form> : <Button size="small" color="primary" onClick={
-                            () => { setParentId(item.id); }
-                          }>
-                            Ответить
-                          </Button>
-                        }
-                      </Typography>
-                    </TableCell>
-                  </Comments>
-                  {item.comments.map((childComment) => (
-                    <ChildComments>
                       <TableCell
-                        key={childComment.id}
+                        key={item.id}
                       >
                         <Typography variant="body2" color="text">
                           <Typography id="modal-modal-title" variant="h6" component="h6">
-                            {childComment.user.name}
+                            {item.user.name}
                           </Typography>
-                          <p>{childComment.text}</p>
+                          <p>{item.text}</p>
+                          {parentId === item.id
+                            ? <form onSubmit={onSubmitAnswer}>
+                              <CommentsForm>
+                                <TextField
+                                  label="Прокомментируйте"
+                                  sx={{ width: '450px' }}
+                                  multiline
+                                  rows={2}
+                                  value={answer}
+                                  onChange={(e: { target: { value: string } }) => {
+                                    answerInputChange(e.target.value);
+                                  }}
+                                />
+                                <Button size="small" color="primary" type="submit">
+                                  Прокомментировать
+                                </Button>
+                              </CommentsForm>
+                            </form> : <Button size="small" color="primary" onClick={
+                              () => { setParentId(item.id); }
+                            }>
+                              Ответить
+                            </Button>
+                          }
                         </Typography>
                       </TableCell>
-                    </ChildComments>
-                  ))}
+                    </Comments>
+                    {item.subComments.map((childComment) => (
+                      <ChildComments>
+                        <TableCell
+                          key={childComment.id}
+                        >
+                          <Typography variant="body2" color="text">
+                            <Typography id="modal-modal-title" variant="h6" component="h6">
+                              {childComment.user.name}
+                            </Typography>
+                            <p>{childComment.text}</p>
+                          </Typography>
+                        </TableCell>
+                      </ChildComments>
+                    ))}
                   </div>
                 ))}
               </TableRow>
@@ -122,7 +122,7 @@ const CommentForm: React.FC<Props> = ({
           </Table>
         </TableContainer>
       </Paper>
-        <form onSubmit={onSubmitComment}>
+      <form onSubmit={onSubmitComment}>
         <CommentsForm>
           <TextField
             label="Прокомментируйте"
@@ -137,8 +137,8 @@ const CommentForm: React.FC<Props> = ({
           <Button size="small" color="primary" type="submit">
             Прокомментировать
           </Button>
-          </CommentsForm>
-        </form>
+        </CommentsForm>
+      </form>
     </div>
   );
 };

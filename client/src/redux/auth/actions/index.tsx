@@ -1,7 +1,7 @@
 /* eslint-disable import/extensions */
 /* eslint-disable import/no-unresolved */
 import { Dispatch } from 'redux';
-import { signInRequest, signUpRequest } from '../../../api/axios';
+import { signInRequest, signUpRequest } from '../../../api/auth';
 
 import {
   AuthActions,
