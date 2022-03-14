@@ -7,8 +7,8 @@ const {
 } = require('../validation/index');
 
 const authRoute = (router) => {
-  router.post('/sign-up', validator.body(signUpSchema), (req, res) => AuthController.signUp(req, res));
-  router.post('/sign-in', validator.body(signInSchema), (req, res) => AuthController.signIn(req, res));
+  router.post('/sign-up', validator.body(signUpSchema), AuthController.signUp);
+  router.post('/sign-in', validator.body(signInSchema), AuthController.signIn);
 };
 
 module.exports = {

@@ -9,10 +9,10 @@ const authMiddleware = require('../middleware/authMiddleware');
 const fileMiddleware = require('../middleware/file');
 
 const userRoute = (router) => {
-  router.get('/user', authMiddleware, (req, res) => UserController.getOneUser(req, res));
-  router.put('/user', authMiddleware, validator.body(updateUserSchema), (req, res) => UserController.updateUser(req, res));
-  router.post('/upload', authMiddleware, fileMiddleware.single('avatar'), (req, res) => UserController.uploadAvatar(req, res));
-  router.put('/update-password', authMiddleware, validator.body(updateUserPassSchema), (req, res) => UserController.updatePass(req, res));
+  router.get('/user/:id', authMiddleware, UserController.getOneUser);
+  router.put('/user/:id', authMiddleware, validator.body(updateUserSchema), UserController.updateUser);
+  router.post('/upload/:id', authMiddleware, fileMiddleware.single('avatar'), UserController.uploadAvatar);
+  router.put('/update-password/:id', authMiddleware, validator.body(updateUserPassSchema), UserController.updatePass);
 };
 
 module.exports = {

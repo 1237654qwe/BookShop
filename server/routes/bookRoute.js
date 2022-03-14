@@ -2,15 +2,15 @@ const { BookController } = require('../controllers/BookController');
 const authMiddleware = require('../middleware/authMiddleware');
 
 const bookRoute = (router) => {
-  router.post('/book', (req, res) => BookController.createBook(req, res));
-  router.get('/book-filters', (req, res) => BookController.getFilters(req, res));
+  router.post('/book', BookController.createBook);
+  router.get('/book-filters', BookController.getFilters);
 
-  router.get('/books', (req, res) => BookController.getBooks(req, res));
-  router.get('/book/:id', (req, res) => BookController.getOneBook(req, res));
-  router.get('/book/:id/comments', (req, res) => BookController.getComments(req, res));
-  router.post('/book/:id/new-comment', authMiddleware, (req, res) => BookController.createComment(req, res));
-  router.post('/book/:id/update-rating', authMiddleware, (req, res) => BookController.updateRating(req, res));
-  router.get('/book/:id/user-rating', authMiddleware, (req, res) => BookController.getUserRaiting(req, res));
+  router.get('/books', BookController.getBooks);
+  router.get('/book/:id', BookController.getOneBook);
+  router.get('/book/:id/comments', BookController.getComments);
+  router.post('/book/:id/new-comment', authMiddleware, BookController.createComment);
+  router.post('/book/:id/update-rating', authMiddleware, BookController.updateRating);
+  router.get('/book/:id/user-rating', authMiddleware, BookController.getUserRaiting);
 };
 
 module.exports = {

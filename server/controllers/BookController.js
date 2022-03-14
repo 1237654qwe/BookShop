@@ -1,3 +1,4 @@
+/* eslint-disable max-len */
 /* eslint-disable no-unused-vars */
 const { Op } = require('@sequelize/core');
 const _ = require('lodash');
@@ -71,17 +72,13 @@ class BookController {
         },
         offset,
         limit: newLimit,
+        include: Rating,
       });
 
-      const allBookRating = await Promise.all(rows.map(async (item) => {
-        const raitings = await Rating.findAll({
-          where: {
-            bookId: item.id,
-          },
-        });
-        const rating = raitings.reduce((acc, cur) => acc + cur.rating, 0) / raitings.length;
+      const allBookRating = rows.map((item) => {
+        const rating = item.ratings.reduce((acc, cur) => acc + cur.rating, 0) / item.ratings.length;
         return { ...item.dataValues, rating };
-      }));
+      });
       res.json({ count, books: allBookRating });
     } catch (e) {
       res.status(500).json(e);
@@ -108,21 +105,11 @@ class BookController {
           bookId: req.params.id,
           parentId: null,
         },
+        include: [
+          { model: User }, { model: Comment, as: 'subComments', include: User },
+        ],
       });
-      const newComments = await Promise.all(comments.map(async (item) => {
-        const parentIdcomments = await Comment.findAll({
-          where: {
-            parentId: item.id,
-          },
-        });
-        const user = await User.findByPk(item.userId);
-        const childComments = await Promise.all(parentIdcomments.map(async (comment) => {
-          const childUser = await User.findByPk(item.userId);
-          return { ...comment.dataValues, user: childUser };
-        }));
-        return { ...item.dataValues, user, comments: childComments };
-      }));
-      res.json(newComments);
+      res.json(comments);
     } catch (e) {
       res.status(500).json(e);
     }
@@ -131,7 +118,6 @@ class BookController {
   static async createComment(req, res) {
     try {
       const book = await Book.findByPk(req.params.id);
-
       const newComment = await book.createComment({
         bookId: req.params.id,
         userId: req.user.id,

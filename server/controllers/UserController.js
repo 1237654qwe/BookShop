@@ -1,6 +1,8 @@
+/* eslint-disable consistent-return */
 const bcrypt = require('bcrypt');
 
 const { User } = require('../models/user');
+const { salt } = require('../utils/salt');
 
 class UserController {
   static async getOneUser(req, res) {
@@ -21,7 +23,11 @@ class UserController {
 
   static async updateUser(req, res) {
     try {
-      const { name, email, dob } = req.body;
+      const {
+        name,
+        email,
+        dob,
+      } = req.body;
 
       const user = await User.update(
         {
@@ -31,7 +37,7 @@ class UserController {
         },
         {
           where: {
-            id: req.user.id,
+            id: req.params.id,
           },
         },
       );
@@ -51,7 +57,6 @@ class UserController {
   static async updatePass(req, res) {
     try {
       const { password } = req.body;
-      const { salt } = await User.findByPk(req.user.id);
 
       const user = await User.update(
         {
@@ -59,7 +64,7 @@ class UserController {
         },
         {
           where: {
-            id: req.user.id,
+            id: req.params.id,
           },
         },
       );
@@ -80,14 +85,14 @@ class UserController {
         },
         {
           where: {
-            id: req.user.id,
+            id: req.params.id,
           },
         },
       );
 
       const updateAvatarUser = await User.findOne({
         where: {
-          id: req.user.id,
+          id: req.params.id,
         },
       });
       res.json(updateAvatarUser.avatarUrl);
